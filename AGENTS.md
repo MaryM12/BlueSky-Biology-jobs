@@ -277,7 +277,8 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
 - `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
   fingerprints, undelivered `pending` vacancies.
 - `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Classifies
-  oldest-first; on an LLM outage or the `--max-classify` cap it advances only to
+  oldest-first; on an LLM outage, the `--max-classify` cap or the
+  `--max-minutes` time budget (slow free LLM tiers) it advances only to
   the last classified post so the next run resumes there. Reuses
   `get_classifier()` and `BlueskySource` unchanged.
 

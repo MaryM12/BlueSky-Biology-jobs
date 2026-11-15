@@ -528,3 +528,22 @@ def test_run_marks_industry_positions(bot, monkeypatch):
     assert "#Postdoc #USA" in text
     rows = bot.archive_path.read_text()
     assert "Industry" in rows and "Academia" in rows
+
+
+def test_time_budget_stops_early_and_resumes(bot, monkeypatch):
+    clock = iter(range(0, 100000, 400))          # every check is 400 "seconds" later
+    monkeypatch.setattr(run.time, "monotonic", lambda: next(clock))
+    earlier = "2020-01-01T00:00:00.000Z"
+    later = "2020-01-02T00:00:00.000Z"
+    posts = [
+        make_post("at://1", "We are hiring a postdoc in Polycomb biology", earlier),
+        make_post("at://2", "We are hiring a research fellow in neurons", later),
+    ]
+    # Budget of 10 min = 600 s: first post at 400 s passes, second at 800 s does not.
+    assert bot(posts, "--lookback-days", "99999", "--max-minutes", "10") == 0
+    state = json.loads(bot.state_path.read_text())
+    assert state["last_timestamp"] == earlier and state["seen_uris"] == ["at://1"]
+    assert len(bot.sent) == 1
+
+    assert bot(posts, "--max-minutes", "0") == 0
+    assert len(bot.sent) == 2 and "neurons" in bot.sent[1]

@@ -29,7 +29,7 @@ Supabase, сайт и почтовые рассылки для этого не �
 | --- | --- |
 | `BLUESKY_HANDLE` | Хэндл аккаунта Bluesky, например `masha.bsky.social` |
 | `BLUESKY_PASSWORD` | **App password**, не основной пароль: Bluesky → Settings → Privacy and security → App passwords |
-| `MISTRAL_API_KEY` | Ключ API в консоли Mistral. Вместо него подойдёт `GEMINI_API_KEY`, `GROQ_API_KEY` или `NVIDIA_API_KEY` — достаточно любого одного |
+| `MISTRAL_API_KEY` | Ключ API в консоли Mistral (console.mistral.ai → API Keys). Вместо него подойдёт `GROQ_API_KEY` (console.groq.com/keys), `GEMINI_API_KEY` или `NVIDIA_API_KEY` — достаточно любого одного. С Mistral бот работает заметно быстрее: у Groq и Gemini между запросами пауза 12–15 секунд, поэтому первый проход за 14 дней растянется на несколько запусков |
 | `TELEGRAM_BOT_TOKEN` | В Telegram: @BotFather → `/newbot` → токен |
 | `TELEGRAM_CHANNEL_ID` | Куда слать, см. ниже |
 

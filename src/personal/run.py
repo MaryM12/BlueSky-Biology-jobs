@@ -62,17 +62,27 @@ def first_run_since(days: int) -> str:
     return start.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
-def classify_posts(posts, classifier, delay: float, max_classify: int):
+def classify_posts(posts, classifier, delay: float, max_classify: int,
+                   max_minutes: float = 0):
     """Classify posts oldest-first.
 
     Returns (matched, processed_posts, complete). ``complete`` is False when
-    the LLM became unavailable or the per-run cap was reached; the remaining
-    posts are picked up by the next run.
+    the LLM became unavailable, the per-run cap was reached or the time budget
+    ran out (some free LLM tiers allow only a few requests per minute); the
+    remaining posts are picked up by the next run.
     """
     ordered = sorted(posts, key=lambda p: p.created_at)
     matched, processed = [], []
     complete = True
+    started = time.monotonic()
     for index, post in enumerate(ordered):
+        if max_minutes > 0 and time.monotonic() - started > max_minutes * 60:
+            logger.warning(
+                f"Time budget of {max_minutes:g} min used up; "
+                f"{len(ordered) - index} posts left for the next run"
+            )
+            complete = False
+            break
         if index >= max_classify:
             logger.warning(
                 f"Per-run cap of {max_classify} posts reached; "
@@ -147,6 +157,9 @@ def main(argv=None) -> int:
                         help="First run only: how many days back to look")
     parser.add_argument("--max-classify", type=int, default=1200,
                         help="Max posts sent to the LLM per run (default: 1200)")
+    parser.add_argument("--max-minutes", type=float, default=140,
+                        help="Stop classifying after this many minutes and "
+                             "continue in the next run (default: 140, 0 = no limit)")
     parser.add_argument("--state", default=DEFAULT_STATE_FILE)
     parser.add_argument("--archive", default=DEFAULT_ARCHIVE_FILE)
     args = parser.parse_args(argv)
@@ -189,7 +202,7 @@ def main(argv=None) -> int:
 
     delay = float(os.environ.get("MYBOT_LLM_DELAY", "1.0"))
     matched, processed, complete = classify_posts(
-        posts, classifier, delay, args.max_classify
+        posts, classifier, delay, args.max_classify, args.max_minutes
     )
     logger.info(f"{len(matched)} of {len(processed)} classified posts match the profile")
 
