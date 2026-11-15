@@ -83,9 +83,14 @@ def evaluate(position: dict) -> dict | None:
     """Decide whether a classified post belongs in the digest.
 
     Returns the position enriched with ``focus_topics``, ``wet_lab_topics``,
-    ``is_focus`` and ``is_priority_level``, or None when it is not relevant.
+    ``is_focus``, ``is_industry`` and ``is_priority_level``, or None when it
+    is not relevant.
     """
     if position.get("is_verified_job") is not True:
+        return None
+
+    is_industry = position.get("sector") == "Industry"
+    if is_industry and not profile.INCLUDE_INDUSTRY:
         return None
 
     types = [t for t in (position.get("position_type") or [])
@@ -108,6 +113,7 @@ def evaluate(position: dict) -> dict | None:
     result["focus_topics"] = topics["focus"]
     result["wet_lab_topics"] = topics["wet_lab"]
     result["is_focus"] = bool(topics["focus"])
+    result["is_industry"] = is_industry
     result["is_priority_level"] = is_priority_level(result)
     return result
 
@@ -125,6 +131,8 @@ def all_queries(upstream_queries: list[str]) -> list[str]:
     """Upstream queries (optional) + profile queries, de-duplicated in order."""
     queries = list(upstream_queries) if profile.USE_UPSTREAM_QUERIES else []
     queries += profile.EXTRA_QUERIES
+    if profile.INCLUDE_INDUSTRY:
+        queries += profile.INDUSTRY_QUERIES
     seen: set[str] = set()
     unique = []
     for query in queries:

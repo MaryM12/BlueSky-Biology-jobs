@@ -8,8 +8,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
 import pytest
 
-from src.llm import LLMUnavailableError
+from src.llm import JobClassifier, LLMUnavailableError
+from src.llm.base import LLMProvider
 from src.personal import digest, matching, profile, run
+from src.personal.llm import PersonalLLM, parse_sector
 from src.personal.state import BotState, MAX_SEEN_URIS, utc_now_iso
 from src.sources.base import Post
 
@@ -141,9 +143,11 @@ def test_rank_focus_then_level_then_newest():
 
 def test_all_queries_merges_and_dedupes(monkeypatch):
     monkeypatch.setattr(profile, "EXTRA_QUERIES", ["postdoc chromatin", "PhD Position "])
+    monkeypatch.setattr(profile, "INDUSTRY_QUERIES", ["scientist chromatin"])
     assert matching.all_queries(["PhD position", "join my lab"]) == [
-        "PhD position", "join my lab", "postdoc chromatin",
+        "PhD position", "join my lab", "postdoc chromatin", "scientist chromatin",
     ]
+    monkeypatch.setattr(profile, "INCLUDE_INDUSTRY", False)
     monkeypatch.setattr(profile, "USE_UPSTREAM_QUERIES", False)
     assert matching.all_queries(["PhD position"]) == ["postdoc chromatin", "PhD Position"]
 
@@ -421,3 +425,106 @@ def test_non_focus_vacancies_use_compact_format(monkeypatch):
 
     monkeypatch.setattr(profile, "COMPACT_NON_FOCUS", False)
     assert "Long description" in digest.build_messages([plain])[0][0]
+
+
+# --- industry positions and the prompt wrapper ------------------------------
+
+class ScriptedProvider(LLMProvider):
+    """Returns a JSON answer; treats posts mentioning a company as industry."""
+
+    name = "Scripted"
+
+    def __init__(self):
+        self.prompts = []
+
+    def classify(self, text, prompt):
+        self.prompts.append(prompt)
+        if '"is_verified_job"' not in prompt:
+            return "YES"
+        industry = "Genentech" in text
+        return json.dumps({
+            "is_verified_job": "hiring" in text,
+            "disciplines": ["Biology"],
+            "country": "USA",
+            "position_type": ["Postdoc"],
+            "job_title": "Scientist, Epigenomics" if industry else None,
+            "hiring_organization": "Genentech" if industry else None,
+            "application_url": None, "application_deadline": None,
+            "location_text": None,
+            "sector": "Industry" if industry else "Academia",
+        })
+
+
+def test_wrapper_extends_only_the_metadata_prompt():
+    provider = ScriptedProvider()
+    classifier = JobClassifier(PersonalLLM(provider))
+    result = classifier.classify_post("Genentech is hiring a scientist in epigenomics")
+
+    prompt = provider.prompts[-1]
+    assert "ADDITIONAL RULES" in prompt and "Industry research positions" in prompt
+    assert prompt.rstrip().endswith("Return ONLY the JSON object, no other text.")
+    assert prompt.index("ADDITIONAL RULES") < prompt.index("Return ONLY the JSON object")
+    assert "{disciplines}" not in prompt and "{{" not in prompt
+    # The upstream result shape is unchanged; the sector travels separately.
+    assert "sector" not in result
+    assert result["is_verified_job"] is True
+    assert classifier.llm.last_sector == "Industry"
+
+    classifier.is_real_job("some text")
+    assert "ADDITIONAL RULES" not in provider.prompts[-1]
+
+
+def test_wrapper_without_industry(monkeypatch):
+    monkeypatch.setattr(profile, "INCLUDE_INDUSTRY", False)
+    provider = ScriptedProvider()
+    JobClassifier(PersonalLLM(provider)).classify_post("We are hiring a postdoc")
+    assert "Industry research positions" not in provider.prompts[-1]
+    assert "staff scientist" in provider.prompts[-1]
+
+
+@pytest.mark.parametrize("response,expected", [
+    ('{"sector": "Industry"}', "Industry"),
+    ('```json\n{"sector": "industry "}\n```', "Industry"),
+    ('[{"sector": "Industry"}]', "Industry"),
+    ('{"sector": "Academia"}', "Academia"),
+    ('{"is_verified_job": true}', "Academia"),
+    ("not json", "Academia"),
+    ('"Industry"', "Academia"),
+])
+def test_parse_sector(response, expected):
+    assert parse_sector(response) == expected
+
+
+def test_industry_positions_are_tagged_and_optional(monkeypatch):
+    pos = make_position("Scientist II, cell biology assays, biotech in Basel",
+                        sector="Industry", job_title="Scientist II", hiring_organization="Roche")
+    result = matching.evaluate(pos)
+    assert result["is_industry"] is True and result["is_priority_level"] is True
+    assert digest.format_compact(result).startswith("#Industry #Scientist #Germany #CellBio")
+
+    text = digest.build_messages([result])[0][0]
+    assert text.startswith("🏢 <b>Industry R&amp;D</b>")
+
+    focus = matching.evaluate(make_position("Scientist, chromatin biology", sector="Industry"))
+    assert digest.format_position(focus).startswith("⭐ #Industry #Scientist #Germany #Epigenetics")
+    assert digest.build_messages([focus])[0][0].startswith("⭐ <b>In focus</b>")
+
+    monkeypatch.setattr(profile, "INCLUDE_INDUSTRY", False)
+    assert matching.evaluate(pos) is None
+
+
+def test_run_marks_industry_positions(bot, monkeypatch):
+    import bluesky_search
+    monkeypatch.setattr(bluesky_search, "get_classifier",
+                        lambda: JobClassifier(ScriptedProvider()))
+    posts = [
+        make_post("at://1", "Genentech is hiring a scientist in epigenomics", NOW, bio="Recruiter"),
+        make_post("at://2", "We are hiring a postdoc in plant genetics", NOW, bio="Plant lab"),
+    ]
+    assert bot(posts) == 0
+    text = bot.sent[0]
+    assert "#Industry #Scientist #USA #Epigenetics" in text
+    assert "Scientist, Epigenomics — Genentech" in text
+    assert "#Postdoc #USA" in text
+    rows = bot.archive_path.read_text()
+    assert "Industry" in rows and "Academia" in rows

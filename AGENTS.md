@@ -265,9 +265,15 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   preview and author bio (bio ignored for `docs/aggregators.json` handles),
   relevance (`Biology` discipline OR any topic match), ranking (focus, then
   postdoc/research-staff level, then newest).
+- `llm.py` - `PersonalLLM` wraps the provider: appends extra rules to the
+  upstream metadata prompt at call time (research-staff roles are Postdoc-level,
+  molecular/cellular neuroscience is Biology, industry R&D roles are accepted
+  when `INCLUDE_INDUSTRY`) and reads an extra `sector` field from the raw
+  answer. `src/llm/config.py` and `JobClassifier` are not modified.
 - `digest.py` - duplicate detection (same URI, normalized application URL, or
   token overlap >= 0.8), Telegram HTML formatting (full cards for focus,
-  compact entries otherwise), per-message delivery tracking.
+  compact entries otherwise; sections: focus, postdoc/research staff,
+  industry R&D, PhD/other), per-message delivery tracking.
 - `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
   fingerprints, undelivered `pending` vacancies.
 - `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Classifies

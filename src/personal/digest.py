@@ -20,9 +20,13 @@ SIMILARITY_THRESHOLD = 0.8
 SECTIONS = [
     ("⭐ <b>In focus</b>", lambda p: p.get("is_focus")),
     ("🔬 <b>Postdoc &amp; research staff</b>",
-     lambda p: not p.get("is_focus") and p.get("is_priority_level")),
+     lambda p: not p.get("is_focus") and not p.get("is_industry")
+     and p.get("is_priority_level")),
+    ("🏢 <b>Industry R&amp;D</b>",
+     lambda p: not p.get("is_focus") and p.get("is_industry")),
     ("🎓 <b>PhD &amp; other</b>",
-     lambda p: not p.get("is_focus") and not p.get("is_priority_level")),
+     lambda p: not p.get("is_focus") and not p.get("is_industry")
+     and not p.get("is_priority_level")),
 ]
 
 
@@ -99,12 +103,26 @@ def _snippet(pos: dict, length: int) -> str:
     return text
 
 
-def format_compact(pos: dict) -> str:
-    """Three-line version used for vacancies outside the focus topics."""
-    tags = [_tag(t) for t in pos.get("position_type") or []]
+# In companies a PhD-level research role is a "Scientist", not a "Postdoc".
+INDUSTRY_TYPE_LABELS = {"Postdoc": "Scientist"}
+
+
+def _base_tags(pos: dict) -> list[str]:
+    """Level, sector and country tags shared by both formats."""
+    types = pos.get("position_type") or []
+    if pos.get("is_industry"):
+        tags = ["#Industry"] + [_tag(INDUSTRY_TYPE_LABELS.get(t, t)) for t in types]
+    else:
+        tags = [_tag(t) for t in types]
     country = pos.get("country") or ""
     if country and country != "Unknown":
         tags.append(_tag(country))
+    return tags
+
+
+def format_compact(pos: dict) -> str:
+    """Three-line version used for vacancies outside the focus topics."""
+    tags = _base_tags(pos)
     tags += [_tag(t) for t in pos.get("wet_lab_topics") or []]
     lines = [html.escape(" ".join(t for t in tags if t))]
 
@@ -129,10 +147,7 @@ def format_compact(pos: dict) -> str:
 
 def format_position(pos: dict) -> str:
     """One vacancy as a full Telegram HTML card."""
-    tags = [_tag(t) for t in pos.get("position_type") or []]
-    country = pos.get("country") or ""
-    if country and country != "Unknown":
-        tags.append(_tag(country))
+    tags = _base_tags(pos)
     tags += [_tag(t) for t in pos.get("focus_topics") or []]
     tags += [_tag(t) for t in pos.get("wet_lab_topics") or []]
     header = " ".join(t for t in tags if t)

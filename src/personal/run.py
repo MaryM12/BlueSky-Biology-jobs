@@ -26,6 +26,7 @@ from src.logger import setup_logger
 
 from . import profile
 from .digest import build_messages, deliver, drop_duplicates, fingerprint, summary_line
+from .llm import PersonalLLM
 from .matching import all_queries, evaluate, rank
 from .state import BotState, utc_now_iso
 
@@ -37,13 +38,13 @@ DEFAULT_ARCHIVE_FILE = "mybot_data/positions.csv"
 # Fields kept for delivery / archive (everything else is dropped after matching).
 KEPT_FIELDS = [
     "uri", "url", "user", "created", "raw_text",
-    "position_type", "country", "disciplines",
+    "position_type", "country", "disciplines", "sector", "is_industry",
     "job_title", "hiring_organization", "application_url",
     "application_deadline", "location_text",
     "focus_topics", "wet_lab_topics", "is_focus", "is_priority_level",
 ]
 ARCHIVE_FIELDS = [
-    "sent_at", "created", "is_focus", "topics", "position_type", "country",
+    "sent_at", "created", "is_focus", "topics", "sector", "position_type", "country",
     "job_title", "hiring_organization", "application_deadline",
     "application_url", "url", "user", "text",
 ]
@@ -91,6 +92,7 @@ def classify_posts(posts, classifier, delay: float, max_classify: int):
             complete = False
             break
         data.update(result)
+        data["sector"] = getattr(classifier.llm, "last_sector", "Academia")
         processed.append(post)
         evaluated = evaluate(data)
         if evaluated:
@@ -117,6 +119,7 @@ def append_archive(path: Path, positions: list[dict], sent_at: str) -> None:
                 "created": pos.get("created"),
                 "is_focus": "yes" if pos.get("is_focus") else "",
                 "topics": ", ".join(topics),
+                "sector": pos.get("sector") or "Academia",
                 "position_type": ", ".join(pos.get("position_type") or []),
                 "country": pos.get("country"),
                 "job_title": pos.get("job_title"),
@@ -163,6 +166,9 @@ def main(argv=None) -> int:
         logger.error("No LLM key configured (set MISTRAL_API_KEY); the bot needs it "
                      "to tell real vacancies from chatter")
         return 2
+    # Adds the profile's extra rules (research staff, industry, sector) to the
+    # upstream prompt without modifying the upstream classifier.
+    classifier.llm = PersonalLLM(classifier.llm)
 
     state = BotState(args.state)
     if state.is_first_run:

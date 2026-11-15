@@ -11,7 +11,12 @@ Supabase, сайт и почтовые рассылки для этого не �
    карточка с текстом поста. Внутри раздела сначала postdoc-уровень.
 2. **🔬 Postdoc & research staff** — postdoc, research fellow / associate,
    staff scientist, research assistant по остальной биологии. Короткая запись.
-3. **🎓 PhD & other** — PhD и магистерские позиции. Короткая запись.
+3. **🏢 Industry R&D** — исследовательские позиции в компаниях (scientist,
+   research associate в биотехе и фарме). Короткая запись, тег `#Industry`.
+4. **🎓 PhD & other** — PhD и магистерские позиции. Короткая запись.
+
+Индустриальная вакансия по вашим темам попадает в первый раздел, тоже с тегом
+`#Industry`.
 
 Повторы одной вакансии (репосты, напоминания, та же ссылка на подачу)
 отбрасываются.
@@ -62,6 +67,8 @@ Supabase, сайт и почтовые рассылки для этого не �
 
 - `EXTRA_QUERIES` — поисковые запросы Bluesky. Добавьте строку, чтобы искать
   новую тему.
+- `INCLUDE_INDUSTRY` — `False`, если позиции из индустрии не нужны;
+  `INDUSTRY_QUERIES` — поисковые запросы для них.
 - `FOCUS_TOPICS` — темы со звёздочкой (регулярные выражения).
 - `WET_LAB_TOPICS` — теги MolBio / CellBio.
 - `RELEVANT_DISCIPLINES` — сейчас `{"Biology"}`: проходит вся биология. Если
@@ -88,8 +95,9 @@ python -m pytest tests/test_personal_bot.py
 - `.github/workflows/my-job-bot.yml` — расписание бота (работает только в форках).
 - В четырёх upstream-workflow добавлено условие `if: github.repository == ...`:
   им нужен Supabase оригинального проекта, в форке они просто пропускаются.
-- `src/llm/config.py` — три правки в промпте: research fellow / research
-  associate / staff scientist считаются вакансиями уровня Postdoc, а
-  молекулярная и клеточная нейробиология относится к Biology.
+- Код и промпт upstream не тронуты. Дополнительные правила для модели
+  (research fellow / research associate / staff scientist — уровень Postdoc,
+  молекулярная и клеточная нейробиология — Biology, позиции в индустрии и поле
+  `sector`) добавляются к промпту на лету в `src/personal/llm.py`.
 
 Обновления из оригинального репозитория подтягиваются кнопкой **Sync fork**.

@@ -2,7 +2,8 @@
 
 Three things are configured here:
 
-1. EXTRA_QUERIES    - additional Bluesky searches (on top of the upstream ones)
+1. EXTRA_QUERIES    - additional Bluesky searches (on top of the upstream ones);
+                      INDUSTRY_QUERIES are added when INCLUDE_INDUSTRY is on
 2. FOCUS_TOPICS     - "my" research areas; matching vacancies get a star and go first
 3. WET_LAB_TOPICS   - broader wet-lab biology tags (molecular / cell biology)
 
@@ -71,6 +72,27 @@ EXTRA_QUERIES = [
     "postdoc neuroepigenetics",
     "postdoc brain organoids",
     "position neurobiology",
+]
+
+# Industry R&D positions (scientist / research associate roles at biotech and
+# pharma companies). Set to False to keep the bot academic-only: the queries
+# below are skipped and company vacancies are dropped.
+INCLUDE_INDUSTRY = True
+
+INDUSTRY_QUERIES = [
+    "biotech hiring scientist",
+    "scientist position biotech",
+    "pharma scientist position",
+    "industry postdoc",
+    "research scientist genomics",
+    "senior scientist genomics",
+    "scientist epigenetics",
+    "scientist chromatin",
+    "scientist molecular biology",
+    "scientist cell biology",
+    "scientist neuroscience hiring",
+    "research associate biotech",
+    "R&D scientist biology",
 ]
 
 # --------------------------------------------------------------------------
