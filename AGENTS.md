@@ -255,6 +255,31 @@ The Telegram digest runs separately on its own 3×/day schedule — see the post
 2. Inline LLM classification per Bluesky post (if classifier available)
 3. Save directly to CSV; update sync state
 
+## Personal Telegram Bot (`src/personal/`, forks only)
+
+A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
+
+- `profile.py` - the only file meant to be edited: extra Bluesky queries, focus
+  topics (starred), wet-lab tags, relevant disciplines, priority position types.
+- `matching.py` - pure functions: regex topic matching over post text, link
+  preview and author bio (bio ignored for `docs/aggregators.json` handles),
+  relevance (`Biology` discipline OR any topic match), ranking (focus, then
+  postdoc/research-staff level, then newest).
+- `digest.py` - duplicate detection (same URI, normalized application URL, or
+  token overlap >= 0.8), Telegram HTML formatting (full cards for focus,
+  compact entries otherwise), per-message delivery tracking.
+- `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
+  fingerprints, undelivered `pending` vacancies.
+- `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Classifies
+  oldest-first; on an LLM outage or the `--max-classify` cap it advances only to
+  the last classified post so the next run resumes there. Reuses
+  `get_classifier()` and `BlueskySource` unchanged.
+
+Workflow: `.github/workflows/my-job-bot.yml` (3x/day, skipped in the upstream
+repository; commits `mybot_data/`). The four upstream scheduled workflows carry
+`if: github.repository == 'EydlinIlya/BlueSky-PhD-jobs'` so they are skipped in
+forks. Tests: `tests/test_personal_bot.py` (fake Bluesky, LLM and Telegram).
+
 ## Testing
 
 ```bash
@@ -275,6 +300,7 @@ Test files:
 - `tests/test_seo_escaping.py` - generated pages, split sitemaps, indexing/schema invariants, and script safety
 - `tests/test_e2e_frontend.py` - offline `?mock` Playwright smoke tests for the current feed selectors
 - `tests/test_sync_state.py` - Incremental sync-state management
+- `tests/test_personal_bot.py` - personal Telegram bot: topic matching, ranking, duplicates, formatting, state, end-to-end run with fakes
 
 ## Key Dependencies
 

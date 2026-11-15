@@ -92,6 +92,14 @@ keys in browser code. Configure your own GitHub Actions secrets before enabling
 scheduled collection or email. See [AGENTS.md](AGENTS.md) for configuration,
 architecture and testing details.
 
+## Personal Telegram bot (forks)
+
+A fork can run a lightweight personal bot instead of the full website: it
+searches Bluesky, filters vacancies with the same LLM classifier, keeps the ones
+matching an editable topic profile (wet-lab biology with a focus on epigenetics,
+3D genome and neurons; postdoc-level roles first) and sends a digest to
+Telegram. It needs no Supabase. See [MYBOT.md](MYBOT.md) (in Russian).
+
 ## Contribute or report a problem
 
 Code, documentation and classification fixes are welcome through

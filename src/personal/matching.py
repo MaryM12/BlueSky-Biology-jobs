@@ -1,0 +1,135 @@
+"""Topic and level matching for the personal job bot (pure functions, no I/O)."""
+
+import json
+import re
+from functools import lru_cache
+from pathlib import Path
+
+from . import profile
+
+_AGGREGATORS_FILE = Path(__file__).resolve().parents[2] / "docs" / "aggregators.json"
+
+
+@lru_cache(maxsize=1)
+def aggregator_handles() -> frozenset[str]:
+    """Handles of known job-aggregator accounts (their bios list every field)."""
+    try:
+        data = json.loads(_AGGREGATORS_FILE.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return frozenset()
+    return frozenset(h.lower() for h in data.get("handles", []))
+
+
+@lru_cache(maxsize=None)
+def _compile(pattern: str) -> re.Pattern:
+    return re.compile(pattern, re.IGNORECASE)
+
+
+def split_bio(position: dict) -> tuple[str, str]:
+    """Return (bio, content) for a post dict produced by BlueskySource.
+
+    ``message`` is ``[Bio: <bio>]\\n\\n<raw_text>`` and ``metadata_text`` adds
+    the quote wrapper and link preview. Content is everything except the bio.
+    """
+    raw_text = position.get("raw_text") or ""
+    message = position.get("message") or ""
+    metadata_text = position.get("metadata_text") or message
+
+    bio = ""
+    prefix = "[Bio: "
+    suffix = "]\n\n" + raw_text
+    if raw_text and message.startswith(prefix) and message.endswith(suffix):
+        bio = message[len(prefix):len(message) - len(suffix)]
+        content = raw_text + metadata_text[len(message):]
+    elif message.startswith(prefix) and not raw_text:
+        # No raw_text (e.g. rows loaded from elsewhere): best-effort split.
+        match = re.match(r"\[Bio: (.*?)\]\n\n", message, flags=re.DOTALL)
+        bio = match.group(1) if match else ""
+        content = metadata_text[match.end():] if match else metadata_text
+    else:
+        content = raw_text + metadata_text[len(message):] if raw_text else metadata_text
+    return bio, content
+
+
+def _matched_tags(text: str, topics: dict[str, list[str]]) -> list[str]:
+    return [
+        tag for tag, patterns in topics.items()
+        if any(_compile(p).search(text) for p in patterns)
+    ]
+
+
+def match_topics(position: dict) -> dict:
+    """Find focus and wet-lab tags for a post.
+
+    The author's bio counts too (a chromatin lab announcing "we're hiring a
+    postdoc" rarely repeats its field), except for aggregator accounts.
+    """
+    bio, content = split_bio(position)
+    handle = (position.get("user") or position.get("user_handle") or "").lower()
+    text = content if handle in aggregator_handles() else f"{content}\n{bio}"
+    return {
+        "focus": _matched_tags(text, profile.FOCUS_TOPICS),
+        "wet_lab": _matched_tags(text, profile.WET_LAB_TOPICS),
+    }
+
+
+def is_priority_level(position: dict) -> bool:
+    """True for postdoc / research-staff level positions."""
+    types = position.get("position_type") or []
+    return any(t in profile.PRIORITY_POSITION_TYPES for t in types)
+
+
+def evaluate(position: dict) -> dict | None:
+    """Decide whether a classified post belongs in the digest.
+
+    Returns the position enriched with ``focus_topics``, ``wet_lab_topics``,
+    ``is_focus`` and ``is_priority_level``, or None when it is not relevant.
+    """
+    if position.get("is_verified_job") is not True:
+        return None
+
+    types = [t for t in (position.get("position_type") or [])
+             if t not in profile.EXCLUDED_POSITION_TYPES]
+    if not types:
+        return None
+
+    topics = match_topics(position)
+    disciplines = position.get("disciplines") or []
+    relevant = (
+        bool(topics["focus"])
+        or bool(topics["wet_lab"])
+        or any(d in profile.RELEVANT_DISCIPLINES for d in disciplines)
+    )
+    if not relevant:
+        return None
+
+    result = dict(position)
+    result["position_type"] = types
+    result["focus_topics"] = topics["focus"]
+    result["wet_lab_topics"] = topics["wet_lab"]
+    result["is_focus"] = bool(topics["focus"])
+    result["is_priority_level"] = is_priority_level(result)
+    return result
+
+
+def rank(positions: list[dict]) -> list[dict]:
+    """Order for the digest: focus first, then research-staff level, then newest."""
+    newest_first = sorted(positions, key=lambda p: p.get("created") or "", reverse=True)
+    return sorted(
+        newest_first,
+        key=lambda p: (not p.get("is_focus"), not p.get("is_priority_level")),
+    )
+
+
+def all_queries(upstream_queries: list[str]) -> list[str]:
+    """Upstream queries (optional) + profile queries, de-duplicated in order."""
+    queries = list(upstream_queries) if profile.USE_UPSTREAM_QUERIES else []
+    queries += profile.EXTRA_QUERIES
+    seen: set[str] = set()
+    unique = []
+    for query in queries:
+        key = query.strip().lower()
+        if key and key not in seen:
+            seen.add(key)
+            unique.append(query.strip())
+    return unique

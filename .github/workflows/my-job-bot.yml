@@ -1,0 +1,84 @@
+name: My Job Bot
+
+# Personal, Supabase-free bot: searches Bluesky, filters vacancies with an LLM,
+# keeps the ones matching src/personal/profile.py and sends them to Telegram.
+# State lives in mybot_data/ and is committed back after every run.
+# Setup: see MYBOT.md.
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: print the digest in the log, send nothing"
+        required: true
+        default: false
+        type: boolean
+      lookback_days:
+        description: "First run only: how many days back to look"
+        required: true
+        default: "14"
+        type: string
+  schedule:
+    - cron: "23 5 * * *"   # 08:23 Moscow
+    - cron: "23 11 * * *"  # 14:23 Moscow
+    - cron: "23 17 * * *"  # 20:23 Moscow
+
+permissions:
+  contents: write
+
+concurrency:
+  group: my-job-bot
+  cancel-in-progress: false
+
+jobs:
+  run:
+    # Runs only in forks; the upstream project uses its own pipeline.
+    if: github.repository != 'EydlinIlya/BlueSky-PhD-jobs'
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Search, classify and send
+        env:
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          LOOKBACK_DAYS: ${{ inputs.lookback_days || '14' }}
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_PASSWORD: ${{ secrets.BLUESKY_PASSWORD }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          NVIDIA_API_KEY: ${{ secrets.NVIDIA_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL_ID: ${{ secrets.TELEGRAM_CHANNEL_ID }}
+        run: |
+          if ! [[ "$LOOKBACK_DAYS" =~ ^[0-9]+$ ]]; then
+            echo "lookback_days must be a non-negative integer" >&2
+            exit 2
+          fi
+          args=(--lookback-days "$LOOKBACK_DAYS")
+          if [[ "$DRY_RUN" == "true" ]]; then
+            args+=(--dry-run)
+          fi
+          python -m src.personal.run "${args[@]}"
+
+      - name: Save bot state
+        if: ${{ always() && inputs.dry_run != true }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add mybot_data/
+          git diff --staged --quiet || git commit -m "Update job bot state"
+          git pull --rebase
+          git push

@@ -19,6 +19,7 @@ permissions:
 
 jobs:
   digest:
+    if: github.repository == 'EydlinIlya/BlueSky-PhD-jobs'  # needs upstream Supabase; skipped in forks
     runs-on: ubuntu-latest
 
     steps:
