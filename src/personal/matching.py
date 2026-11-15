@@ -73,6 +73,21 @@ def match_topics(position: dict) -> dict:
     }
 
 
+def passes_prefilter(position: dict) -> bool:
+    """Cheap check before spending an LLM call on a post (see profile.py)."""
+    if not profile.PREFILTER_ENABLED:
+        return True
+    bio, content = split_bio(position)
+    handle = (position.get("user") or position.get("user_handle") or "").lower()
+    text = content if handle in aggregator_handles() else f"{content}\n{bio}"
+    if any(_compile(p).search(text) for p in profile.LIFE_SCIENCE_PATTERNS):
+        return True
+    return bool(
+        _matched_tags(text, profile.FOCUS_TOPICS)
+        or _matched_tags(text, profile.WET_LAB_TOPICS)
+    )
+
+
 def is_priority_level(position: dict) -> bool:
     """True for postdoc / research-staff level positions."""
     types = position.get("position_type") or []

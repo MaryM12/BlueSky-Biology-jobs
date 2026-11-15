@@ -547,3 +547,79 @@ def test_time_budget_stops_early_and_resumes(bot, monkeypatch):
 
     assert bot(posts, "--max-minutes", "0") == 0
     assert len(bot.sent) == 2 and "neurons" in bot.sent[1]
+
+
+# --- pre-filter and Groq fallbacks ------------------------------------------
+
+@pytest.mark.parametrize("text,bio,expected", [
+    ("Postdoc in chromatin biology", "", True),
+    ("PhD position on CRISPR screens in mouse embryos", "", True),
+    ("We are hiring a postdoc! Link below.", "Cell biologist studying mitochondria", True),
+    ("Scientist II, antibody engineering", "", True),
+    ("PhD position in medieval history", "Historian", False),
+    ("Funded PhD on beavers and lowland ecosystems, lots of fieldwork", "", False),
+    ("Postdoc in labour economics", "Economist, coffee drinker", False),
+])
+def test_prefilter(text, bio, expected):
+    assert matching.passes_prefilter(make_position(text, bio=bio)) is expected
+
+
+def test_prefilter_can_be_disabled(monkeypatch):
+    pos = make_position("PhD position in medieval history")
+    monkeypatch.setattr(profile, "PREFILTER_ENABLED", False)
+    assert matching.passes_prefilter(pos) is True
+
+
+def test_every_topic_match_passes_the_prefilter(monkeypatch):
+    monkeypatch.setattr(profile, "LIFE_SCIENCE_PATTERNS", [])
+    assert matching.passes_prefilter(make_position("how TADs form")) is True
+
+
+def test_run_skips_llm_for_prefiltered_posts(bot, monkeypatch):
+    import bluesky_search
+    provider = ScriptedProvider()
+    monkeypatch.setattr(bluesky_search, "get_classifier", lambda: JobClassifier(provider))
+    posts = [
+        make_post("at://1", "We are hiring a historian of medieval trade", NOW, bio="History dept"),
+        make_post("at://2", "We are hiring a postdoc in chromatin biology", NOW, bio="Lab"),
+    ]
+    assert bot(posts) == 0
+    assert len(provider.prompts) == 1                       # one LLM call only
+    state = json.loads(bot.state_path.read_text())
+    assert set(state["seen_uris"]) == {"at://1", "at://2"}  # both are done
+    assert len(bot.sent) == 1 and "chromatin" in bot.sent[0]
+
+
+def test_max_classify_counts_llm_calls_not_posts(bot, monkeypatch):
+    posts = [make_post(f"at://h{i}", f"We are hiring a historian number {i}",
+                       f"2020-01-0{i + 1}T00:00:00.000Z", bio="History") for i in range(3)]
+    posts.append(make_post("at://b", "We are hiring a postdoc in chromatin biology",
+                           "2020-01-05T00:00:00.000Z"))
+    assert bot(posts, "--lookback-days", "99999", "--max-classify", "1") == 0
+    assert len(bot.sent) == 1
+
+
+def test_groq_fallback_chain_and_delay(monkeypatch):
+    from src.llm.fallback import FallbackProvider
+
+    class Holder:
+        llm = ScriptedProvider()
+
+    for key in ("MISTRAL_API_KEY", "GEMINI_API_KEY", "NVIDIA_API_KEY", "GROQ_API_KEY"):
+        monkeypatch.delenv(key, raising=False)
+    holder = Holder()
+    run.add_groq_fallbacks(holder)
+    assert isinstance(holder.llm, ScriptedProvider)         # no Groq key: unchanged
+    assert run.default_llm_delay() == 1.0
+
+    monkeypatch.setenv("GROQ_API_KEY", "gsk_test")
+    monkeypatch.setattr(profile, "GROQ_FALLBACK_MODELS", ["model-a", "model-b"])
+    run.add_groq_fallbacks(holder)
+    assert isinstance(holder.llm, FallbackProvider)
+    assert holder.llm.fallback.model == "model-b"
+    assert holder.llm.primary.fallback.model == "model-a"
+    assert "model-a" in holder.llm.name and "model-b" in holder.llm.name
+    assert run.default_llm_delay() == 7.0
+
+    monkeypatch.setenv("MISTRAL_API_KEY", "x")
+    assert run.default_llm_delay() == 1.0

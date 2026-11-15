@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: "Dry run: print the digest in the log, send nothing"
+        description: "Dry run: classify a small sample, print the digest in the log, send nothing"
         required: true
         default: false
         type: boolean
@@ -69,7 +69,7 @@ jobs:
           fi
           args=(--lookback-days "$LOOKBACK_DAYS")
           if [[ "$DRY_RUN" == "true" ]]; then
-            args+=(--dry-run)
+            args+=(--dry-run --max-classify 15)
           fi
           python -m src.personal.run "${args[@]}"
 

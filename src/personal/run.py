@@ -27,7 +27,7 @@ from src.logger import setup_logger
 from . import profile
 from .digest import build_messages, deliver, drop_duplicates, fingerprint, summary_line
 from .llm import PersonalLLM
-from .matching import all_queries, evaluate, rank
+from .matching import all_queries, evaluate, passes_prefilter, rank
 from .state import BotState, utc_now_iso
 
 logger = setup_logger()
@@ -66,16 +66,22 @@ def classify_posts(posts, classifier, delay: float, max_classify: int,
                    max_minutes: float = 0):
     """Classify posts oldest-first.
 
-    Returns (matched, processed_posts, complete). ``complete`` is False when
-    the LLM became unavailable, the per-run cap was reached or the time budget
-    ran out (some free LLM tiers allow only a few requests per minute); the
-    remaining posts are picked up by the next run.
+    Posts that fail the keyword pre-filter are skipped without an LLM call.
+    Returns (matched, processed_posts, complete, llm_calls). ``complete`` is
+    False when the LLM became unavailable, the per-run cap of LLM calls was
+    reached or the time budget ran out (some free LLM tiers allow only a few
+    requests per minute); the remaining posts are picked up by the next run.
     """
     ordered = sorted(posts, key=lambda p: p.created_at)
     matched, processed = [], []
     complete = True
+    llm_calls = 0
     started = time.monotonic()
     for index, post in enumerate(ordered):
+        data = post.to_dict()
+        if not passes_prefilter(data):
+            processed.append(post)
+            continue
         if max_minutes > 0 and time.monotonic() - started > max_minutes * 60:
             logger.warning(
                 f"Time budget of {max_minutes:g} min used up; "
@@ -83,14 +89,16 @@ def classify_posts(posts, classifier, delay: float, max_classify: int,
             )
             complete = False
             break
-        if index >= max_classify:
+        if llm_calls >= max_classify:
             logger.warning(
-                f"Per-run cap of {max_classify} posts reached; "
-                f"{len(ordered) - index} left for the next run"
+                f"Per-run cap of {max_classify} LLM calls reached; "
+                f"{len(ordered) - index} posts left for the next run"
             )
             complete = False
             break
-        data = post.to_dict()
+        if delay > 0 and llm_calls > 0:
+            time.sleep(delay)
+        llm_calls += 1
         try:
             result = classifier.classify_post(
                 data.get("raw_text") or data.get("message", ""),
@@ -107,9 +115,32 @@ def classify_posts(posts, classifier, delay: float, max_classify: int,
         evaluated = evaluate(data)
         if evaluated:
             matched.append(slim(evaluated))
-        if delay > 0 and index < len(ordered) - 1:
-            time.sleep(delay)
-    return matched, processed, complete
+    return matched, processed, complete, llm_calls
+
+
+def add_groq_fallbacks(classifier) -> None:
+    """Chain extra Groq models behind the configured provider(s)."""
+    from src.llm.fallback import FallbackProvider
+    from src.llm.groq import GroqProvider
+
+    key = os.environ.get("GROQ_API_KEY")
+    if not key:
+        return
+    llm = classifier.llm
+    for model in profile.GROQ_FALLBACK_MODELS:
+        extra = GroqProvider(key, model=model)
+        extra.name = f"Groq {model}"
+        llm = FallbackProvider(llm, extra)
+    classifier.llm = llm
+
+
+def default_llm_delay() -> float:
+    """Seconds between LLM calls: slower when Groq's 8k tokens/min is the limit."""
+    other_keys = ("MISTRAL_API_KEY", "GEMINI_API_KEY", "NVIDIA_API_KEY")
+    groq_only = os.environ.get("GROQ_API_KEY") and not any(
+        os.environ.get(k) for k in other_keys
+    )
+    return 7.0 if groq_only else 1.0
 
 
 def append_archive(path: Path, positions: list[dict], sent_at: str) -> None:
@@ -156,7 +187,7 @@ def main(argv=None) -> int:
                         default=profile.FIRST_RUN_LOOKBACK_DAYS,
                         help="First run only: how many days back to look")
     parser.add_argument("--max-classify", type=int, default=1200,
-                        help="Max posts sent to the LLM per run (default: 1200)")
+                        help="Max LLM calls per run (default: 1200)")
     parser.add_argument("--max-minutes", type=float, default=140,
                         help="Stop classifying after this many minutes and "
                              "continue in the next run (default: 140, 0 = no limit)")
@@ -179,6 +210,7 @@ def main(argv=None) -> int:
         logger.error("No LLM key configured (set MISTRAL_API_KEY); the bot needs it "
                      "to tell real vacancies from chatter")
         return 2
+    add_groq_fallbacks(classifier)
     # Adds the profile's extra rules (research staff, industry, sector) to the
     # upstream prompt without modifying the upstream classifier.
     classifier.llm = PersonalLLM(classifier.llm)
@@ -198,13 +230,16 @@ def main(argv=None) -> int:
         since_timestamp=since,
         existing_uris=set(state.seen_uris),
     )
-    logger.info(f"{len(posts)} new posts to classify ({classifier.llm.name})")
+    logger.info(f"{len(posts)} new posts ({classifier.llm.name})")
 
-    delay = float(os.environ.get("MYBOT_LLM_DELAY", "1.0"))
-    matched, processed, complete = classify_posts(
+    delay = float(os.environ.get("MYBOT_LLM_DELAY") or default_llm_delay())
+    matched, processed, complete, llm_calls = classify_posts(
         posts, classifier, delay, args.max_classify, args.max_minutes
     )
-    logger.info(f"{len(matched)} of {len(processed)} classified posts match the profile")
+    logger.info(
+        f"{len(processed)} posts handled: {len(processed) - llm_calls} skipped by the "
+        f"pre-filter, {llm_calls} sent to the LLM, {len(matched)} match the profile"
+    )
 
     if complete:
         state.add_seen(seen_uris)

@@ -276,7 +276,11 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   industry R&D, PhD/other), per-message delivery tracking.
 - `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
   fingerprints, undelivered `pending` vacancies.
-- `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Classifies
+- `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Posts
+  failing `matching.passes_prefilter` (no molecular/cellular life-science or
+  topic keyword in text, link preview or bio) are skipped without an LLM call.
+  With `GROQ_API_KEY`, `profile.GROQ_FALLBACK_MODELS` are chained as extra
+  fallbacks (Groq free quotas are per model). Classifies
   oldest-first; on an LLM outage, the `--max-classify` cap or the
   `--max-minutes` time budget (slow free LLM tiers) it advances only to
   the last classified post so the next run resumes there. Reuses

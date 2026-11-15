@@ -106,6 +106,7 @@ FOCUS_TOPICS = {
         r"polycomb",
         r"(?-i:\bPRC[12]\b)",
         r"dna methylation",
+        r"epiallel",
         r"methylom",
         r"nucleosome",
         r"\bchip-?seq\b",
@@ -168,6 +169,36 @@ WET_LAB_TOPICS = {
         r"developmental biolog",
     ],
 }
+
+# --------------------------------------------------------------------------
+# 4. Pre-filter: which posts are worth showing to the LLM at all
+# --------------------------------------------------------------------------
+# Every LLM call costs time and free-tier quota, and most "PhD position" posts
+# are about other fields. With the pre-filter on, a post goes to the LLM only
+# if its text, link preview or author bio mentions molecular / cellular life
+# science (the patterns below) or any topic pattern above. Ecology, field
+# biology and non-biology posts are skipped. Set to False to classify every
+# post (needs a generous LLM quota, e.g. Mistral).
+PREFILTER_ENABLED = True
+
+LIFE_SCIENCE_PATTERNS = [
+    r"\bbio(log|chem|phys|med|info|tech|eng|scien|mol)",
+    r"\bcell(s|ular)?\b", r"molecul", r"\bgen(e|es|etics?|omes?|omics?)\b", r"genom",
+    r"neuro", r"\bbrain", r"protein", r"proteosta", r"\bm?i?rnas?\b", r"\bdna\b",
+    r"chromatin", r"chromosom", r"epigen", r"transcript", r"microb", r"immun",
+    r"cancer", r"tumou?r", r"oncolog", r"\bstem\b", r"organoid", r"crispr",
+    r"sequencing", r"\b(multi[- ]?)?omics\b", r"\bvir(us|uses|al|olog)", r"bacteri", r"pathogen",
+    r"zebrafish", r"drosophila", r"\bmouse\b", r"\bmice\b", r"yeast", r"elegans",
+    r"embryo", r"tissue", r"extracellular", r"metabol", r"mitochond", r"membrane",
+    r"enzym", r"cryo-?em", r"microscop", r"synap", r"developmental", r"life scien",
+    r"wet[- ]?lab", r"single[- ]cell", r"proteom", r"lipid", r"antibod", r"nanobod",
+    r"vaccin", r"regenerat", r"signal(l)?ing", r"mutat", r"pharmac", r"physiolog",
+    r"\b(emb[lo]|irb|crg|imba|max planck|crick|sanger|janelia|igbmc)\b",
+]
+
+# Groq's free plan has a small daily token quota per model. When the main
+# model's quota is used up, the bot continues with these models (same key).
+GROQ_FALLBACK_MODELS = ["openai/gpt-oss-20b"]
 
 # --------------------------------------------------------------------------
 # What gets through, and in which order
