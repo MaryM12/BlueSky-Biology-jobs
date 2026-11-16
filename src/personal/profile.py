@@ -198,8 +198,21 @@ LIFE_SCIENCE_PATTERNS = [
     r"\b(emb[lo]|irb|crg|imba|max planck|crick|sanger|janelia|igbmc)\b",
 ]
 
-# Posts about these fields are skipped unless they also match a focus or
-# wet-lab topic above (many aggregators tag ecology or clinical jobs "#biology").
+# Posts about these fields are skipped - but only when nothing in the post
+# points to molecular or cellular work: a focus or wet-lab topic above, or any
+# of MOLECULAR_PATTERNS below, keeps the post. So "single-cell atlas of
+# environmental exposure" or "plant microbiome" stay, while "forest ecology"
+# or "cognitive neuroscience" go.
+MOLECULAR_PATTERNS = [
+    r"molecul", r"\bcell(s|ular)?\b", r"protein", r"\bdna\b", r"\bm?i?rnas?\b",
+    r"\bgen(e|es|etics?|omes?|omics?)\b", r"genom", r"chromatin", r"chromosom",
+    r"epigen", r"transcript", r"crispr", r"sequencing", r"\b(multi[- ]?)?omics\b",
+    r"proteom", r"biochem", r"biophys", r"microscop", r"cryo-?em", r"mitochond",
+    r"organoid", r"\bstem\b", r"enzym", r"single[- ]cell", r"microb", r"bacteri",
+    r"\bvir(us|uses|al|olog)", r"immun", r"cancer", r"tumou?r", r"antibod",
+    r"zebrafish", r"drosophila", r"\bmouse\b", r"\bmice\b", r"yeast", r"elegans",
+]
+
 OFF_TOPIC_PATTERNS = [
     r"ecolog", r"biodiversity", r"conservation", r"wildlife", r"fisher", r"forestry",
     r"agricultur", r"agro", r"\bsoil", r"\bcrop", r"environmental", r"contaminant",

@@ -285,7 +285,7 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   (capped, max 7 days old) for the next run; the rest are dropped. All fetched
   posts are marked seen and the timestamp always advances. `evaluate` also
   drops faculty titles, expired deadlines and off-topic fields
-  (`profile.OFF_TOPIC_PATTERNS`). Before triage, `merge_companions` folds
+  (`profile.OFF_TOPIC_PATTERNS`, unless `MOLECULAR_PATTERNS` or a topic match). Before triage, `merge_companions` folds
   posts by one account within 5 s of each other (or replying to each other)
   into one candidate - aggregators publish "link" + "description" pairs.
   Routing: research-staff and industry vacancies go to `TELEGRAM_CHANNEL_ID`

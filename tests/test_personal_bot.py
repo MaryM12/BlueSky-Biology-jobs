@@ -765,7 +765,8 @@ def test_computer_science_discipline_counts_as_bioinformatics():
     "Radboud is hiring: postdoc position ecology of waterway management #postdoc #biology",
     "Postdoctoral researcher in 3D geometric morphometrics and zooarchaeology #biologicalsciences",
     "Postdoc in cognitive-affective neuroscience of the sense of self",
-    "Staff research associate, pediatrics #biology #microbiomesequencing",
+    "Research assistant: emotion regulation, behavioral experiments and fMRI of the brain",
+    "Postdoc in forest ecology and plant physiology",
 ])
 def test_off_topic_posts_are_skipped(text):
     assert matching.triage(make_position(text)) is None
@@ -901,3 +902,14 @@ def test_archive_is_upgraded_when_columns_change(tmp_path):
     assert list(rows[0].keys()) == run.ARCHIVE_FIELDS
     assert rows[0]["text"] == "old row" and rows[0]["kind"] == ""
     assert rows[1]["kind"] == "bioinformatics" and rows[1]["sent_at"] == "2026-11-17"
+
+
+@pytest.mark.parametrize("text", [
+    "Postdoc: single-cell atlas of tissue response to environmental chemicals",
+    "Postdoctoral researcher in plant microbiome and microbial inheritance, agricultural institute",
+    "Postdoc in genetics of puberty, Department of Public Health",
+    "Staff research associate, pediatrics #biology #microbiomesequencing",
+])
+def test_molecular_wording_protects_from_the_off_topic_filter(text):
+    assert matching.triage(make_position(text)) == 1
+    assert matching.evaluate(make_position(text)) is not None

@@ -120,12 +120,19 @@ def triage(position: dict) -> int | None:
     if _matched_tags(text, profile.FOCUS_TOPICS):
         return 0
     wet_lab = bool(_matched_tags(text, profile.WET_LAB_TOPICS))
-    if not wet_lab and _any(profile.OFF_TOPIC_PATTERNS, content):
+    if not wet_lab and is_off_topic(content):
         return None
     life_science = wet_lab or _any(profile.LIFE_SCIENCE_PATTERNS, text)
     if not life_science:
         return None if profile.PREFILTER_ENABLED else 3
     return 1 if staff_role else 2
+
+
+def is_off_topic(text: str) -> bool:
+    """An off-topic field with no sign of molecular or cellular work."""
+    return _any(profile.OFF_TOPIC_PATTERNS, text) and not _any(
+        profile.MOLECULAR_PATTERNS, text
+    )
 
 
 def is_computational(position: dict) -> bool:
@@ -191,7 +198,7 @@ def evaluate(position: dict) -> dict | None:
         return None
     if not topics["focus"] and not topics["wet_lab"]:
         _, content = split_bio(position)
-        if _any(profile.OFF_TOPIC_PATTERNS, f"{title}\n{content}"):
+        if is_off_topic(f"{title}\n{content}"):
             return None
 
     result = dict(position)
