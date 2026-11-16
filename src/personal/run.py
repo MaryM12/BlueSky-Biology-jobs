@@ -10,6 +10,7 @@ Tune the search in src/personal/profile.py. Setup guide: MYBOT.md.
 
 import argparse
 import csv
+import html
 import os
 import re
 import sys
@@ -27,7 +28,7 @@ from src.logger import setup_logger
 from . import profile
 from .digest import build_messages, deliver, drop_duplicates, fingerprint, summary_line
 from .llm import PersonalLLM
-from .matching import all_queries, evaluate, passes_prefilter, rank
+from .matching import all_queries, evaluate, rank, triage
 from .state import BotState, utc_now_iso
 
 logger = setup_logger()
@@ -62,60 +63,75 @@ def first_run_since(days: int) -> str:
     return start.strftime("%Y-%m-%dT%H:%M:%S.000Z")
 
 
-def classify_posts(posts, classifier, delay: float, max_classify: int,
-                   max_minutes: float = 0):
-    """Classify posts oldest-first.
+# What is kept of a post while it waits for the LLM.
+POST_FIELDS = ["uri", "url", "user", "created", "message", "raw_text", "metadata_text"]
 
-    Posts that fail the keyword pre-filter are skipped without an LLM call.
-    Returns (matched, processed_posts, complete, llm_calls). ``complete`` is
-    False when the LLM became unavailable, the per-run cap of LLM calls was
-    reached or the time budget ran out (some free LLM tiers allow only a few
-    requests per minute); the remaining posts are picked up by the next run.
+
+def build_candidates(queue: list[dict], posts) -> tuple[list[tuple[int, dict]], int]:
+    """Triage waiting and new posts; returns (candidates in LLM order, skipped).
+
+    Candidates are (tier, post_dict) pairs sorted by tier, newest first.
     """
-    ordered = sorted(posts, key=lambda p: p.created_at)
-    matched, processed = [], []
-    complete = True
+    candidates = []
+    skipped = 0
+    for data in list(queue) + [post.to_dict() for post in posts]:
+        tier = triage(data)
+        if tier is None:
+            skipped += 1
+            continue
+        candidates.append((tier, {key: data.get(key) for key in POST_FIELDS}))
+    candidates.sort(key=lambda item: item[1].get("created") or "", reverse=True)
+    candidates.sort(key=lambda item: item[0])
+    return candidates, skipped
+
+
+def classify_candidates(candidates, classifier, delay: float, max_classify: int,
+                        max_minutes: float = 0):
+    """Classify candidates in order until done or out of budget.
+
+    Returns (matched, leftovers, llm_calls). ``leftovers`` are the candidates
+    not reached because the LLM became unavailable, the per-run cap of LLM
+    calls was hit or the time budget ran out (free LLM tiers are slow and
+    have small daily quotas).
+    """
+    matched = []
     llm_calls = 0
     started = time.monotonic()
-    for index, post in enumerate(ordered):
-        data = post.to_dict()
-        if not passes_prefilter(data):
-            processed.append(post)
-            continue
+    for index, (tier, data) in enumerate(candidates):
         if max_minutes > 0 and time.monotonic() - started > max_minutes * 60:
-            logger.warning(
-                f"Time budget of {max_minutes:g} min used up; "
-                f"{len(ordered) - index} posts left for the next run"
-            )
-            complete = False
-            break
+            logger.warning(f"Time budget of {max_minutes:g} min used up")
+            return matched, candidates[index:], llm_calls
         if llm_calls >= max_classify:
-            logger.warning(
-                f"Per-run cap of {max_classify} LLM calls reached; "
-                f"{len(ordered) - index} posts left for the next run"
-            )
-            complete = False
-            break
+            logger.warning(f"Per-run cap of {max_classify} LLM calls reached")
+            return matched, candidates[index:], llm_calls
         if delay > 0 and llm_calls > 0:
             time.sleep(delay)
-        llm_calls += 1
         try:
             result = classifier.classify_post(
-                data.get("raw_text") or data.get("message", ""),
+                data.get("raw_text") or data.get("message") or "",
                 metadata_text=data.get("metadata_text"),
                 posted_at=data.get("created"),
             )
         except LLMUnavailableError as error:
             logger.error(f"LLM unavailable, stopping early: {error}")
-            complete = False
-            break
-        data.update(result)
-        data["sector"] = getattr(classifier.llm, "last_sector", "Academia")
-        processed.append(post)
-        evaluated = evaluate(data)
+            return matched, candidates[index:], llm_calls
+        llm_calls += 1
+        classified = {**data, **result}
+        classified["sector"] = getattr(classifier.llm, "last_sector", "Academia")
+        evaluated = evaluate(classified)
         if evaluated:
             matched.append(slim(evaluated))
-    return matched, processed, complete, llm_calls
+    return matched, [], llm_calls
+
+
+def next_queue(leftovers: list[tuple[int, dict]]) -> list[dict]:
+    """Leftovers worth keeping for the next run: top tiers, recent, capped."""
+    oldest = first_run_since(profile.QUEUE_MAX_AGE_DAYS)
+    keep = [
+        data for tier, data in leftovers
+        if tier <= 1 and (data.get("created") or "") >= oldest
+    ]
+    return keep[:profile.QUEUE_MAX]
 
 
 def add_groq_fallbacks(classifier) -> None:
@@ -174,7 +190,7 @@ def append_archive(path: Path, positions: list[dict], sent_at: str) -> None:
 
 
 def _plain(html_text: str) -> str:
-    return re.sub(r"<[^>]+>", "", html_text)
+    return html.unescape(re.sub(r"<[^>]+>", "", html_text))
 
 
 def main(argv=None) -> int:
@@ -189,8 +205,8 @@ def main(argv=None) -> int:
     parser.add_argument("--max-classify", type=int, default=1200,
                         help="Max LLM calls per run (default: 1200)")
     parser.add_argument("--max-minutes", type=float, default=140,
-                        help="Stop classifying after this many minutes and "
-                             "continue in the next run (default: 140, 0 = no limit)")
+                        help="Stop classifying after this many minutes "
+                             "(default: 140, 0 = no limit)")
     parser.add_argument("--state", default=DEFAULT_STATE_FILE)
     parser.add_argument("--archive", default=DEFAULT_ARCHIVE_FILE)
     args = parser.parse_args(argv)
@@ -230,29 +246,37 @@ def main(argv=None) -> int:
         since_timestamp=since,
         existing_uris=set(state.seen_uris),
     )
-    logger.info(f"{len(posts)} new posts ({classifier.llm.name})")
+    logger.info(f"{len(posts)} new posts, {len(state.queue)} waiting from earlier runs "
+                f"({classifier.llm.name})")
+
+    # Everything fetched counts as seen; what the LLM does not get to is
+    # either queued (top priority) or dropped (see profile.py).
+    state.add_seen(seen_uris)
+    if posts:
+        state.advance(max(p.created_at for p in posts))
+
+    candidates, skipped = build_candidates(state.queue, posts)
+    by_tier = [sum(1 for tier, _ in candidates if tier == t) for t in range(4)]
+    logger.info(
+        f"Pre-filter skipped {skipped}; to classify: {by_tier[0]} focus, "
+        f"{by_tier[1]} research staff, {by_tier[2] + by_tier[3]} other"
+    )
 
     delay = float(os.environ.get("MYBOT_LLM_DELAY") or default_llm_delay())
-    matched, processed, complete, llm_calls = classify_posts(
-        posts, classifier, delay, args.max_classify, args.max_minutes
+    matched, leftovers, llm_calls = classify_candidates(
+        candidates, classifier, delay, args.max_classify, args.max_minutes
     )
+    state.queue = next_queue(leftovers)
     logger.info(
-        f"{len(processed)} posts handled: {len(processed) - llm_calls} skipped by the "
-        f"pre-filter, {llm_calls} sent to the LLM, {len(matched)} match the profile"
+        f"{llm_calls} posts sent to the LLM, {len(matched)} match the profile; "
+        f"{len(state.queue)} wait for the next run, "
+        f"{len(leftovers) - len(state.queue)} dropped (lower priority or too old)"
     )
 
-    if complete:
-        state.add_seen(seen_uris)
-    else:
-        state.add_seen(p.uri for p in processed)
-        state.add_seen(p.quoted_uri for p in processed if p.quoted_uri)
-    if processed:
-        state.advance(max(p.created_at for p in processed))
-
-    candidates = rank(state.pending + matched)
-    to_send = drop_duplicates(candidates, state.sent)
+    ranked = rank(state.pending + matched)
+    to_send = drop_duplicates(ranked, state.sent)
     logger.info(f"{len(to_send)} vacancies to send "
-                f"({len(candidates) - len(to_send)} duplicates dropped)")
+                f"({len(ranked) - len(to_send)} duplicates dropped)")
 
     if args.dry_run:
         for text, _ in build_messages(to_send, title=summary_line(to_send)):

@@ -2,6 +2,7 @@
 
 import json
 import re
+from datetime import datetime, timezone
 from functools import lru_cache
 from pathlib import Path
 
@@ -88,6 +89,47 @@ def passes_prefilter(position: dict) -> bool:
     )
 
 
+def _any(patterns: list[str], text: str) -> bool:
+    return any(_compile(p).search(text) for p in patterns)
+
+
+def triage(position: dict) -> int | None:
+    """Priority of a post for the LLM: 0 is best, None means "skip it".
+
+    0 - focus topic; 1 - research-staff wording in a life-science post;
+    2 - other life-science post; 3 - anything else (only with the pre-filter
+    off). Faculty-only announcements are skipped.
+    """
+    bio, content = split_bio(position)
+    handle = (position.get("user") or position.get("user_handle") or "").lower()
+    text = content if handle in aggregator_handles() else f"{content}\n{bio}"
+
+    staff_role = _any(profile.STAFF_ROLE_PATTERNS, content)
+    student_role = bool(re.search(r"\bph\.?d\b|doctoral|master", content, re.IGNORECASE))
+    if _any(profile.EXCLUDED_ROLE_PATTERNS, content) and not (staff_role or student_role):
+        return None
+
+    if _matched_tags(text, profile.FOCUS_TOPICS):
+        return 0
+    life_science = bool(
+        _matched_tags(text, profile.WET_LAB_TOPICS)
+        or _any(profile.LIFE_SCIENCE_PATTERNS, text)
+    )
+    if not life_science:
+        return None if profile.PREFILTER_ENABLED else 3
+    return 1 if staff_role else 2
+
+
+def deadline_passed(position: dict) -> bool:
+    """True when the extracted application deadline is before today (UTC)."""
+    value = str(position.get("application_deadline") or "")[:10]
+    try:
+        deadline = datetime.strptime(value, "%Y-%m-%d").date()
+    except ValueError:
+        return False
+    return deadline < datetime.now(timezone.utc).date()
+
+
 def is_priority_level(position: dict) -> bool:
     """True for postdoc / research-staff level positions."""
     types = position.get("position_type") or []
@@ -111,6 +153,12 @@ def evaluate(position: dict) -> dict | None:
     types = [t for t in (position.get("position_type") or [])
              if t not in profile.EXCLUDED_POSITION_TYPES]
     if not types:
+        return None
+
+    title = position.get("job_title") or ""
+    if title and _any(profile.EXCLUDED_ROLE_PATTERNS, title):
+        return None
+    if profile.DROP_EXPIRED_DEADLINES and deadline_passed(position):
         return None
 
     topics = match_topics(position)

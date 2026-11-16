@@ -12,7 +12,7 @@ from . import profile
 
 TELEGRAM_MAX_LENGTH = 4096
 SNIPPET_LENGTH = 420
-COMPACT_SNIPPET_LENGTH = 160
+COMPACT_SNIPPET_LENGTH = 150
 SEPARATOR = "\n\n━━━━━━━━━━━━━━━\n\n"
 SEND_DELAY = 1.2          # seconds between messages (Telegram: ~1 msg/s per chat)
 SIMILARITY_THRESHOLD = 0.8
@@ -121,7 +121,7 @@ def _base_tags(pos: dict) -> list[str]:
 
 
 def format_compact(pos: dict) -> str:
-    """Three-line version used for vacancies outside the focus topics."""
+    """Short version used for vacancies outside the focus topics."""
     tags = _base_tags(pos)
     tags += [_tag(t) for t in pos.get("wet_lab_topics") or []]
     lines = [html.escape(" ".join(t for t in tags if t))]
@@ -131,8 +131,9 @@ def format_compact(pos: dict) -> str:
     if title:
         headline = " — ".join(html.escape(x) for x in (title, org) if x)
         lines.append(f"<b>{headline}</b>")
-    else:
-        lines.append(html.escape(_snippet(pos, COMPACT_SNIPPET_LENGTH)))
+    # Titles are often generic ("Research Associate"), so always show what
+    # the post is about.
+    lines.append(html.escape(_snippet(pos, COMPACT_SNIPPET_LENGTH)))
 
     footer = []
     if pos.get("application_deadline"):

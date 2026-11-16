@@ -186,13 +186,13 @@ def test_format_position_escapes_and_tags():
     pos = matching.evaluate(make_position(
         "Postdoc on Hi-C <in neurons> & more",
         job_title="Postdoc in 3D genomics", hiring_organization="EMBL",
-        application_deadline="2026-12-01", application_url="https://embl.org/job?a=1&b=2",
+        application_deadline="2999-12-01", application_url="https://embl.org/job?a=1&b=2",
     ))
     text = digest.format_position(pos)
     assert text.startswith("⭐ #Postdoc #Germany #Genome3D #Neuro")
     assert "<b>Postdoc in 3D genomics — EMBL</b>" in text
     assert "&lt;in neurons&gt; &amp; more" in text
-    assert "⏰ Deadline: 2026-12-01" in text
+    assert "⏰ Deadline: 2999-12-01" in text
     assert 'href="https://embl.org/job?a=1&amp;b=2"' in text
 
 
@@ -275,13 +275,15 @@ def make_post(uri, text, created, bio="Chromatin lab"):
 
 
 class FakeClassifier:
-    """Marks posts containing 'hiring' as jobs; fails on posts containing 'BOOM'."""
+    """Marks posts containing 'hiring' as jobs; fails while ``down`` is set."""
 
     class llm:
         name = "Fake"
 
+    down = False
+
     def classify_post(self, text, metadata_text=None, posted_at=None):
-        if "BOOM" in text:
+        if FakeClassifier.down:
             raise LLMUnavailableError("down")
         is_job = "hiring" in text
         return {
@@ -323,6 +325,7 @@ def bot(monkeypatch, tmp_path):
     monkeypatch.setenv("TELEGRAM_BOT_TOKEN", "token")
     monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "123")
     monkeypatch.setenv("MYBOT_LLM_DELAY", "0")
+    monkeypatch.setattr(FakeClassifier, "down", False)
 
     state_path = tmp_path / "state.json"
     archive_path = tmp_path / "positions.csv"
@@ -386,45 +389,11 @@ def test_run_keeps_undelivered_for_next_run(bot):
     assert len(bot.sent) == 2
 
 
-def test_run_llm_outage_resumes_from_last_classified_post(bot):
-    earlier = "2020-01-01T00:00:00.000Z"
-    later = "2020-01-02T00:00:00.000Z"
-    posts = [
-        make_post("at://1", "We are hiring a postdoc in Polycomb biology", earlier),
-        make_post("at://2", "BOOM hiring a research fellow in neurons", later),
-    ]
-    assert bot(posts, "--lookback-days", "99999") == 0
-    state = json.loads(bot.state_path.read_text())
-    assert state["last_timestamp"] == earlier
-    assert state["seen_uris"] == ["at://1"]
-    assert len(bot.sent) == 1
-
-    posts[1] = make_post("at://2", "We are hiring a research fellow in neurons", later)
-    assert bot(posts) == 0
-    assert len(bot.sent) == 2 and "neurons" in bot.sent[1]
-
 
 def test_run_requires_telegram_settings(bot, monkeypatch):
     monkeypatch.delenv("TELEGRAM_BOT_TOKEN")
     assert bot([]) == 2
 
-
-def test_non_focus_vacancies_use_compact_format(monkeypatch):
-    plain = matching.evaluate(make_position(
-        "Postdoc in plant genetics. " + "Long description. " * 40,
-        job_title="Postdoc in plant genetics", hiring_organization="JIC",
-        application_deadline="2026-12-01"))
-    untitled = matching.evaluate(make_position(
-        "We have an opening for a postdoc working on yeast. " * 10, uri="at://u"))
-
-    text = digest.build_messages([plain, untitled])[0][0]
-    assert "<b>Postdoc in plant genetics — JIC</b>\n⏰ 2026-12-01 · 🔗 " in text
-    assert "Long description" not in text
-    assert digest.SEPARATOR not in text
-    assert len(digest.format_compact(untitled)) < 400
-
-    monkeypatch.setattr(profile, "COMPACT_NON_FOCUS", False)
-    assert "Long description" in digest.build_messages([plain])[0][0]
 
 
 # --- industry positions and the prompt wrapper ------------------------------
@@ -530,24 +499,6 @@ def test_run_marks_industry_positions(bot, monkeypatch):
     assert "Industry" in rows and "Academia" in rows
 
 
-def test_time_budget_stops_early_and_resumes(bot, monkeypatch):
-    clock = iter(range(0, 100000, 400))          # every check is 400 "seconds" later
-    monkeypatch.setattr(run.time, "monotonic", lambda: next(clock))
-    earlier = "2020-01-01T00:00:00.000Z"
-    later = "2020-01-02T00:00:00.000Z"
-    posts = [
-        make_post("at://1", "We are hiring a postdoc in Polycomb biology", earlier),
-        make_post("at://2", "We are hiring a research fellow in neurons", later),
-    ]
-    # Budget of 10 min = 600 s: first post at 400 s passes, second at 800 s does not.
-    assert bot(posts, "--lookback-days", "99999", "--max-minutes", "10") == 0
-    state = json.loads(bot.state_path.read_text())
-    assert state["last_timestamp"] == earlier and state["seen_uris"] == ["at://1"]
-    assert len(bot.sent) == 1
-
-    assert bot(posts, "--max-minutes", "0") == 0
-    assert len(bot.sent) == 2 and "neurons" in bot.sent[1]
-
 
 # --- pre-filter and Groq fallbacks ------------------------------------------
 
@@ -623,3 +574,138 @@ def test_groq_fallback_chain_and_delay(monkeypatch):
 
     monkeypatch.setenv("MISTRAL_API_KEY", "x")
     assert run.default_llm_delay() == 1.0
+
+
+# --- priority order, queue and exclusions -----------------------------------
+
+def days_ago(days):
+    from datetime import datetime, timedelta, timezone
+    moment = datetime.now(timezone.utc) - timedelta(days=days)
+    return moment.strftime("%Y-%m-%dT%H:%M:%S.000Z")
+
+
+@pytest.mark.parametrize("text,bio,expected", [
+    ("PhD position on Polycomb and chromatin loops", "", 0),
+    ("We are hiring a postdoc!", "3D genome lab", 0),
+    ("Postdoc position in yeast metabolism", "", 1),
+    ("Research associate, antibody engineering", "", 1),
+    ("PhD position in yeast metabolism", "", 2),
+    ("PhD position in medieval history", "", None),
+    ("Tenure-track Assistant Professor in Cell Biology, apply now", "", None),
+    ("Assistant Professor and two postdoc positions in cell biology", "", 1),
+])
+def test_triage(text, bio, expected):
+    assert matching.triage(make_position(text, bio=bio)) == expected
+
+
+def test_triage_without_prefilter(monkeypatch):
+    monkeypatch.setattr(profile, "PREFILTER_ENABLED", False)
+    assert matching.triage(make_position("PhD position in medieval history")) == 3
+
+
+def test_faculty_titles_and_expired_deadlines_are_dropped(monkeypatch):
+    faculty = make_position("Join us! Postdocs welcome too. Cell biology.",
+                            job_title="Tenure-Track Assistant Professor in Neurobiology")
+    assert matching.evaluate(faculty) is None
+
+    expired = make_position("Postdoc in cell biology", application_deadline="2020-01-31")
+    upcoming = make_position("Postdoc in cell biology", application_deadline="2999-01-31")
+    unclear = make_position("Postdoc in cell biology", application_deadline="rolling")
+    assert matching.evaluate(expired) is None
+    assert matching.evaluate(upcoming) is not None
+    assert matching.evaluate(unclear) is not None
+
+    monkeypatch.setattr(profile, "DROP_EXPIRED_DEADLINES", False)
+    assert matching.evaluate(expired) is not None
+
+
+def test_compact_entries_show_title_and_snippet(monkeypatch):
+    plain = matching.evaluate(make_position(
+        "Postdoc in plant genetics. " + "Long description. " * 40,
+        job_title="Postdoc in plant genetics", hiring_organization="JIC",
+        application_deadline="2999-12-01"))
+    untitled = matching.evaluate(make_position(
+        "We have an opening for a postdoc working on yeast. " * 10, uri="at://u"))
+
+    text = digest.build_messages([plain, untitled])[0][0]
+    assert "<b>Postdoc in plant genetics — JIC</b>\nPostdoc in plant genetics. Long" in text
+    assert "…\n⏰ 2999-12-01 · 🔗 " in text
+    assert digest.SEPARATOR not in text
+    assert len(digest.format_compact(plain)) < 450
+    assert len(digest.format_compact(untitled)) < 400
+
+    monkeypatch.setattr(profile, "COMPACT_NON_FOCUS", False)
+    assert digest.SNIPPET_LENGTH > digest.COMPACT_SNIPPET_LENGTH
+    assert len(digest.build_messages([plain])[0][0]) > 500
+
+
+def test_candidates_are_ordered_by_tier_then_newest():
+    posts = [
+        make_post("at://phd-new", "PhD position in yeast metabolism", days_ago(0), bio="x"),
+        make_post("at://staff-old", "Postdoc position in yeast metabolism", days_ago(3), bio="x"),
+        make_post("at://staff-new", "Postdoc position in mouse immunology", days_ago(1), bio="x"),
+        make_post("at://focus-old", "PhD position on chromatin loops", days_ago(5), bio="x"),
+        make_post("at://skip", "PhD position in medieval history", days_ago(0), bio="x"),
+    ]
+    candidates, skipped = run.build_candidates([], posts)
+    assert skipped == 1
+    assert [data["uri"] for _, data in candidates] == [
+        "at://focus-old", "at://staff-new", "at://staff-old", "at://phd-new",
+    ]
+    assert [tier for tier, _ in candidates] == [0, 1, 1, 2]
+
+
+def test_queue_keeps_only_recent_top_priority_posts(monkeypatch):
+    leftovers = [
+        (0, {"uri": "focus", "created": days_ago(1)}),
+        (0, {"uri": "focus-too-old", "created": days_ago(30)}),
+        (1, {"uri": "staff", "created": days_ago(2)}),
+        (2, {"uri": "phd", "created": days_ago(0)}),
+    ]
+    assert [d["uri"] for d in run.next_queue(leftovers)] == ["focus", "staff"]
+    monkeypatch.setattr(profile, "QUEUE_MAX", 1)
+    assert [d["uri"] for d in run.next_queue(leftovers)] == ["focus"]
+
+
+def test_run_llm_outage_queues_top_priority_posts(bot, monkeypatch):
+    posts = [
+        make_post("at://1", "We are hiring a postdoc in Polycomb biology", days_ago(1)),
+        make_post("at://2", "We are hiring a PhD student in yeast metabolism", days_ago(0), bio="x"),
+    ]
+    monkeypatch.setattr(FakeClassifier, "down", True)
+    assert bot(posts) == 0
+    state = json.loads(bot.state_path.read_text())
+    assert bot.sent == []
+    assert [p["uri"] for p in state["queue"]] == ["at://1"]      # focus post waits
+    assert set(state["seen_uris"]) == {"at://1", "at://2"}      # the PhD one is dropped
+
+    monkeypatch.setattr(FakeClassifier, "down", False)
+    assert bot(posts) == 0                                        # nothing new to fetch
+    state = json.loads(bot.state_path.read_text())
+    assert state["queue"] == []
+    assert len(bot.sent) == 1 and "Polycomb" in bot.sent[0]
+
+
+def test_time_budget_classifies_best_posts_first(bot, monkeypatch):
+    clock = iter(range(0, 100000, 400))          # every check is 400 "seconds" later
+    monkeypatch.setattr(run.time, "monotonic", lambda: next(clock))
+    posts = [
+        make_post("at://phd", "We are hiring a PhD student in yeast metabolism", days_ago(0), bio="x"),
+        make_post("at://old", "We are hiring a postdoc in Polycomb biology", days_ago(2)),
+        make_post("at://new", "We are hiring a research fellow in neurons", days_ago(1)),
+    ]
+    # Budget of 10 min = 600 s: the first candidate (at 400 s) passes, the next does not.
+    assert bot(posts, "--max-minutes", "10") == 0
+    assert len(bot.sent) == 1 and "neurons" in bot.sent[0]
+    state = json.loads(bot.state_path.read_text())
+    assert [p["uri"] for p in state["queue"]] == ["at://old"]
+
+    assert bot(posts, "--max-minutes", "0") == 0
+    assert len(bot.sent) == 2 and "Polycomb" in bot.sent[1]
+
+
+def test_dry_run_prints_plain_text(bot, capsys):
+    posts = [make_post("at://1", "We are hiring a postdoc in Polycomb & chromatin", NOW)]
+    assert bot(posts, "--dry-run") == 0
+    out = capsys.readouterr().out
+    assert "Polycomb & chromatin" in out and "&amp;" not in out

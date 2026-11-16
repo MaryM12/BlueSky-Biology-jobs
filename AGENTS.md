@@ -275,16 +275,20 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   compact entries otherwise; sections: focus, postdoc/research staff,
   industry R&D, PhD/other), per-message delivery tracking.
 - `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
-  fingerprints, undelivered `pending` vacancies.
-- `run.py` - entry point (`python -m src.personal.run [--dry-run]`). Posts
-  failing `matching.passes_prefilter` (no molecular/cellular life-science or
-  topic keyword in text, link preview or bio) are skipped without an LLM call.
-  With `GROQ_API_KEY`, `profile.GROQ_FALLBACK_MODELS` are chained as extra
-  fallbacks (Groq free quotas are per model). Classifies
-  oldest-first; on an LLM outage, the `--max-classify` cap or the
-  `--max-minutes` time budget (slow free LLM tiers) it advances only to
-  the last classified post so the next run resumes there. Reuses
-  `get_classifier()` and `BlueskySource` unchanged.
+  fingerprints, undelivered `pending` vacancies, unclassified `queue` posts.
+- `run.py` - entry point (`python -m src.personal.run [--dry-run]`).
+  `matching.triage` gives each post a tier before any LLM call: 0 focus topic,
+  1 research-staff wording in a life-science post, 2 other life science, `None`
+  skip (no molecular/cellular life-science keyword in text, link preview or
+  bio, or a faculty-only announcement). Candidates are classified by tier,
+  newest first, until done, the LLM is unavailable, `--max-classify` or
+  `--max-minutes` is reached. Unreached tier 0-1 posts go to `state.queue`
+  (capped, max 7 days old) for the next run; the rest are dropped. All fetched
+  posts are marked seen and the timestamp always advances. `evaluate` also
+  drops faculty titles and expired deadlines. With `GROQ_API_KEY`,
+  `profile.GROQ_FALLBACK_MODELS` are chained as extra fallbacks (Groq free
+  quotas are per model). Reuses `get_classifier()` and `BlueskySource`
+  unchanged.
 
 Workflow: `.github/workflows/my-job-bot.yml` (3x/day, skipped in the upstream
 repository; commits `mybot_data/`). The four upstream scheduled workflows carry

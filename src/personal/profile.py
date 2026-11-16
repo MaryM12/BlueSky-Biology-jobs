@@ -196,6 +196,30 @@ LIFE_SCIENCE_PATTERNS = [
     r"\b(emb[lo]|irb|crg|imba|max planck|crick|sanger|janelia|igbmc)\b",
 ]
 
+# Order in which posts are shown to the LLM when its quota or time is short:
+#   0 - mentions a focus topic            (kept for the next run if not reached)
+#   1 - research-staff wording + life science   (kept for the next run)
+#   2 - other life-science posts, e.g. PhD positions (dropped if not reached)
+# Within a group the newest posts go first.
+STAFF_ROLE_PATTERNS = [
+    r"post-?doc", r"research fellow", r"research associate", r"research assistant",
+    r"\bscientist\b", r"\bresearcher\b",
+]
+QUEUE_MAX = 300           # at most this many posts wait for the next run
+QUEUE_MAX_AGE_DAYS = 7    # ...and none older than this
+
+# Faculty-level openings are not what this bot is for. A post is skipped when
+# it uses this wording and mentions no postdoc / PhD / research-staff role;
+# a vacancy is dropped when its extracted title matches.
+EXCLUDED_ROLE_PATTERNS = [
+    r"(assistant|associate|full) professor", r"tenure[- ]track", r"professorship",
+    r"faculty (position|search|opening|job)", r"\blecturer\b", r"group leader",
+    r"department (chair|head)",
+]
+
+# Vacancies whose application deadline has already passed are dropped.
+DROP_EXPIRED_DEADLINES = True
+
 # Groq's free plan has a small daily token quota per model. When the main
 # model's quota is used up, the bot continues with these models (same key).
 GROQ_FALLBACK_MODELS = ["openai/gpt-oss-20b"]

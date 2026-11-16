@@ -18,7 +18,7 @@ def utc_now_iso() -> str:
 
 
 class BotState:
-    """Last sync position, seen URIs, sent vacancies and unsent leftovers."""
+    """Last sync position, seen URIs, sent vacancies, unsent and unclassified leftovers."""
 
     def __init__(self, path: str | Path):
         self.path = Path(path)
@@ -26,6 +26,7 @@ class BotState:
         self.seen_uris: list[str] = []   # ordered, oldest first
         self.sent: list[dict] = []       # {uri, app_url, text, sent_at}
         self.pending: list[dict] = []    # matched vacancies not delivered yet
+        self.queue: list[dict] = []      # high-priority posts not classified yet
         self._load()
 
     def _load(self) -> None:
@@ -41,6 +42,7 @@ class BotState:
         self.seen_uris = [u for u in data.get("seen_uris", []) if isinstance(u, str)]
         self.sent = [s for s in data.get("sent", []) if isinstance(s, dict)]
         self.pending = [p for p in data.get("pending", []) if isinstance(p, dict)]
+        self.queue = [p for p in data.get("queue", []) if isinstance(p, dict)]
 
     @property
     def is_first_run(self) -> bool:
@@ -72,6 +74,7 @@ class BotState:
             "updated_at": utc_now_iso(),
             "last_timestamp": self.last_timestamp,
             "pending": self.pending,
+            "queue": self.queue,
             "sent": self.sent,
             "seen_uris": self.seen_uris,
         }
