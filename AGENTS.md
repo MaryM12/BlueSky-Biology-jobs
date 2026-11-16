@@ -272,8 +272,7 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   answer. `src/llm/config.py` and `JobClassifier` are not modified.
 - `digest.py` - duplicate detection (same URI, normalized application URL, or
   token overlap >= 0.8), Telegram HTML formatting (full cards for focus,
-  compact entries otherwise; sections: focus, postdoc/research staff,
-  industry R&D, PhD/other), per-message delivery tracking.
+  compact entries otherwise), `route` by chat, per-message delivery tracking.
 - `state.py` - `mybot_data/state.json`: last timestamp, capped seen URIs, sent
   fingerprints, undelivered `pending` vacancies, unclassified `queue` posts.
 - `run.py` - entry point (`python -m src.personal.run [--dry-run]`).
@@ -285,7 +284,16 @@ A Supabase-free single-pass mode for forks; setup guide in `MYBOT.md`.
   `--max-minutes` is reached. Unreached tier 0-1 posts go to `state.queue`
   (capped, max 7 days old) for the next run; the rest are dropped. All fetched
   posts are marked seen and the timestamp always advances. `evaluate` also
-  drops faculty titles and expired deadlines. With `GROQ_API_KEY`,
+  drops faculty titles, expired deadlines and off-topic fields
+  (`profile.OFF_TOPIC_PATTERNS`). Before triage, `merge_companions` folds
+  posts by one account within 5 s of each other (or replying to each other)
+  into one candidate - aggregators publish "link" + "description" pairs.
+  Routing: research-staff and industry vacancies go to `TELEGRAM_CHANNEL_ID`
+  in sections (focus, wet lab, bioinformatics, industry; each section starts
+  a new message); bioinformatics optionally to `TELEGRAM_CHANNEL_ID_BIOINF`;
+  PhD/Master vacancies to `TELEGRAM_CHANNEL_ID_PHD` per
+  `profile.PHD_POSITIONS`, and with no destination student-only posts are
+  skipped before the LLM (`matching.include_students`). With `GROQ_API_KEY`,
   `profile.GROQ_FALLBACK_MODELS` are chained as extra fallbacks (Groq free
   quotas are per model). Reuses `get_classifier()` and `BlueskySource`
   unchanged.

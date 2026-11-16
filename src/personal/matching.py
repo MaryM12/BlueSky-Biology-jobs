@@ -10,6 +10,12 @@ from . import profile
 
 _AGGREGATORS_FILE = Path(__file__).resolve().parents[2] / "docs" / "aggregators.json"
 
+# Set by run.py: False when PhD / Master positions have nowhere to go.
+include_students = True
+
+_STUDENT_ROLE = re.compile(r"\bph\.?d\b|doctoral (student|candidate|position|researcher)"
+                           r"|\bmaster|\bmsc\b|studentship", re.IGNORECASE)
+
 
 @lru_cache(maxsize=1)
 def aggregator_handles() -> frozenset[str]:
@@ -105,19 +111,32 @@ def triage(position: dict) -> int | None:
     text = content if handle in aggregator_handles() else f"{content}\n{bio}"
 
     staff_role = _any(profile.STAFF_ROLE_PATTERNS, content)
-    student_role = bool(re.search(r"\bph\.?d\b|doctoral|master", content, re.IGNORECASE))
+    student_role = bool(_STUDENT_ROLE.search(content))
     if _any(profile.EXCLUDED_ROLE_PATTERNS, content) and not (staff_role or student_role):
+        return None
+    if student_role and not staff_role and not include_students:
         return None
 
     if _matched_tags(text, profile.FOCUS_TOPICS):
         return 0
-    life_science = bool(
-        _matched_tags(text, profile.WET_LAB_TOPICS)
-        or _any(profile.LIFE_SCIENCE_PATTERNS, text)
-    )
+    wet_lab = bool(_matched_tags(text, profile.WET_LAB_TOPICS))
+    if not wet_lab and _any(profile.OFF_TOPIC_PATTERNS, content):
+        return None
+    life_science = wet_lab or _any(profile.LIFE_SCIENCE_PATTERNS, text)
     if not life_science:
         return None if profile.PREFILTER_ENABLED else 3
     return 1 if staff_role else 2
+
+
+def is_computational(position: dict) -> bool:
+    """Bioinformatics / dry-lab vacancy (mixed wet+dry ones are not)."""
+    _, content = split_bio(position)
+    text = f"{position.get('job_title') or ''}\n{content}"
+    if _any(profile.HANDS_ON_PATTERNS, text):
+        return False
+    return _any(profile.COMPUTATIONAL_PATTERNS, text) or (
+        "Computer Science" in (position.get("disciplines") or [])
+    )
 
 
 def deadline_passed(position: dict) -> bool:
@@ -140,8 +159,8 @@ def evaluate(position: dict) -> dict | None:
     """Decide whether a classified post belongs in the digest.
 
     Returns the position enriched with ``focus_topics``, ``wet_lab_topics``,
-    ``is_focus``, ``is_industry`` and ``is_priority_level``, or None when it
-    is not relevant.
+    ``is_focus``, ``is_industry``, ``is_priority_level``, ``is_computational``
+    and ``stream`` ("main" or "phd"), or None when it is not relevant.
     """
     if position.get("is_verified_job") is not True:
         return None
@@ -170,6 +189,10 @@ def evaluate(position: dict) -> dict | None:
     )
     if not relevant:
         return None
+    if not topics["focus"] and not topics["wet_lab"]:
+        _, content = split_bio(position)
+        if _any(profile.OFF_TOPIC_PATTERNS, f"{title}\n{content}"):
+            return None
 
     result = dict(position)
     result["position_type"] = types
@@ -178,6 +201,11 @@ def evaluate(position: dict) -> dict | None:
     result["is_focus"] = bool(topics["focus"])
     result["is_industry"] = is_industry
     result["is_priority_level"] = is_priority_level(result)
+    result["is_computational"] = is_computational(result)
+    # Research-staff and industry roles go to the main stream, students apart.
+    result["stream"] = "main" if result["is_priority_level"] or is_industry else "phd"
+    if result["stream"] == "phd" and not include_students:
+        return None
     return result
 
 

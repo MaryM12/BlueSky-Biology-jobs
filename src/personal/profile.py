@@ -182,7 +182,9 @@ WET_LAB_TOPICS = {
 PREFILTER_ENABLED = True
 
 LIFE_SCIENCE_PATTERNS = [
-    r"\bbio(log|chem|phys|med|info|tech|eng|scien|mol)",
+    # "biology" alone is too broad (ecology, zoology...), so name the kinds.
+    r"\bbio(chem|phys|med|info|tech|eng|mol)",
+    r"(chemical|synthetic|systems|structural|computational|quantitative|cancer) biolog",
     r"\bcell(s|ular)?\b", r"molecul", r"\bgen(e|es|etics?|omes?|omics?)\b", r"genom",
     r"neuro", r"\bbrain", r"protein", r"proteosta", r"\bm?i?rnas?\b", r"\bdna\b",
     r"chromatin", r"chromosom", r"epigen", r"transcript", r"microb", r"immun",
@@ -195,6 +197,41 @@ LIFE_SCIENCE_PATTERNS = [
     r"vaccin", r"regenerat", r"signal(l)?ing", r"mutat", r"pharmac", r"physiolog",
     r"\b(emb[lo]|irb|crg|imba|max planck|crick|sanger|janelia|igbmc)\b",
 ]
+
+# Posts about these fields are skipped unless they also match a focus or
+# wet-lab topic above (many aggregators tag ecology or clinical jobs "#biology").
+OFF_TOPIC_PATTERNS = [
+    r"ecolog", r"biodiversity", r"conservation", r"wildlife", r"fisher", r"forestry",
+    r"agricultur", r"agro", r"\bsoil", r"\bcrop", r"environmental", r"contaminant",
+    r"archaeolog", r"morphometric", r"paleo", r"palaeo",
+    r"cognitive", r"behaviou?ral", r"psycholog", r"\bfmri\b", r"psychiatr",
+    r"clinical trial", r"nursing", r"pa?ediatric", r"epidemiolog", r"public health",
+]
+
+# --------------------------------------------------------------------------
+# 5. Bioinformatics vs wet lab
+# --------------------------------------------------------------------------
+# A vacancy is shown as bioinformatics when it uses computational wording and
+# no hands-on wording (mixed wet/dry positions stay with the wet lab).
+COMPUTATIONAL_PATTERNS = [
+    r"bioinformati", r"computational", r"machine learning", r"deep learning",
+    r"data scien", r"biostatist", r"\balgorithm", r"software", r"in silico",
+    r"modell?ing", r"(?-i:\bAI\b)", r"(?-i:\bML\b)", r"\bpipelines?\b",
+]
+HANDS_ON_PATTERNS = [
+    r"wet[- ]?lab", r"experimental", r"\bbench\b", r"hands-on", r"\bcloning\b",
+    r"cell culture", r"microscop", r"mouse models?", r"\bassays?\b",
+]
+
+# --------------------------------------------------------------------------
+# 6. PhD / Master positions
+# --------------------------------------------------------------------------
+#   "channel" - sent to a separate Telegram channel (secret
+#               TELEGRAM_CHANNEL_ID_PHD); until that secret is set they are
+#               not sent and not even shown to the LLM (saves quota)
+#   "main"    - sent to the main chat as the last section
+#   "off"     - never sent
+PHD_POSITIONS = "channel"
 
 # Order in which posts are shown to the LLM when its quota or time is short:
 #   0 - mentions a focus topic            (kept for the next run if not reached)

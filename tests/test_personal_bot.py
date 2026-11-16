@@ -16,6 +16,14 @@ from src.personal.state import BotState, MAX_SEEN_URIS, utc_now_iso
 from src.sources.base import Post
 
 
+@pytest.fixture(autouse=True)
+def _defaults(monkeypatch):
+    """run.main() flips this module flag; start every test from the default."""
+    monkeypatch.setattr(matching, "include_students", True)
+    for key in ("TELEGRAM_CHANNEL_ID_PHD", "TELEGRAM_CHANNEL_ID_BIOINF"):
+        monkeypatch.delenv(key, raising=False)
+
+
 def make_position(text, bio="", user="lab.bsky.social", **fields):
     message = f"[Bio: {bio}]\n\n{text}" if bio else text
     position = {
@@ -95,7 +103,7 @@ def test_evaluate_rejects_non_jobs_and_off_topic():
 
 
 def test_evaluate_keeps_plain_biology_without_star():
-    result = matching.evaluate(make_position("Postdoc in plant ecology genetics"))
+    result = matching.evaluate(make_position("Postdoc in yeast genetics"))
     assert result is not None
     assert result["is_focus"] is False
     assert result["is_priority_level"] is True
@@ -203,17 +211,20 @@ def test_build_messages_sections_and_size_limit():
             f"Vacancy number {i}: " + "chromatin " * 60, uri=f"at://f{i}")))
     for i in range(5):
         positions.append(matching.evaluate(make_position(
-            f"Plain biology PhD number {i} in plant science", uri=f"at://p{i}",
-            position_type=["PhD Student"])))
+            f"Postdoc number {i} in yeast protein folding", uri=f"at://w{i}")))
+    for i in range(3):
+        positions.append(matching.evaluate(make_position(
+            f"Postdoc number {i} in computational protein design", uri=f"at://c{i}")))
     messages = digest.build_messages(matching.rank(positions), title="TITLE")
 
-    assert len(messages) > 1
     assert all(len(text) <= digest.TELEGRAM_MAX_LENGTH for text, _ in messages)
-    assert messages[0][0].startswith("TITLE\n\n⭐ <b>In focus</b>")
-    joined = "\n".join(text for text, _ in messages)
-    assert joined.count("In focus") == 1
-    assert joined.count("PhD &amp; other") == 1
-    assert sum(len(group) for _, group in messages) == 45
+    assert messages[0][0].startswith("TITLE\n\n⭐ <b>In focus</b> · 40")
+    starts = [text.split("\n")[0] for text, _ in messages]
+    assert starts.count("⭐ <b>In focus</b> (cont.)") >= 1
+    # Every section opens its own message.
+    assert "🧪 <b>Wet lab</b> · 5" in starts
+    assert "💻 <b>Bioinformatics</b> · 3" in starts
+    assert sum(len(group) for _, group in messages) == 48
 
 
 def test_deliver_reports_undelivered_on_failure(monkeypatch):
@@ -267,10 +278,11 @@ def test_state_survives_corrupt_file(tmp_path):
 
 # --- end to end (fake Bluesky, fake LLM, fake Telegram) ---------------------
 
-def make_post(uri, text, created, bio="Chromatin lab"):
+def make_post(uri, text, created, bio="Chromatin lab", user=None):
     message = f"[Bio: {bio}]\n\n{text}"
+    user = user or f"lab-{uri.split('/')[-1]}.bsky.social"     # one account per post
     return Post(uri=uri, message=message, url=f"https://bsky.app/{uri[-1]}",
-                user_handle="lab.bsky.social", created_at=created, source="bluesky",
+                user_handle=user, created_at=created, source="bluesky",
                 raw_text=text, metadata_text=message)
 
 
@@ -290,7 +302,8 @@ class FakeClassifier:
             "is_verified_job": is_job,
             "disciplines": ["Biology"] if is_job else None,
             "country": "UK" if is_job else None,
-            "position_type": ["Postdoc"] if is_job else None,
+            "position_type": (["PhD Student"] if "PhD student" in text else ["Postdoc"])
+            if is_job else None,
             "job_title": None, "hiring_organization": None,
             "application_url": None, "application_deadline": None,
             "location_text": None,
@@ -472,11 +485,11 @@ def test_industry_positions_are_tagged_and_optional(monkeypatch):
     assert digest.format_compact(result).startswith("#Industry #Scientist #Germany #CellBio")
 
     text = digest.build_messages([result])[0][0]
-    assert text.startswith("🏢 <b>Industry R&amp;D</b>")
+    assert text.startswith("🏢 <b>Industry R&amp;D</b> · 1")
 
     focus = matching.evaluate(make_position("Scientist, chromatin biology", sector="Industry"))
     assert digest.format_position(focus).startswith("⭐ #Industry #Scientist #Germany #Epigenetics")
-    assert digest.build_messages([focus])[0][0].startswith("⭐ <b>In focus</b>")
+    assert digest.build_messages([focus])[0][0].startswith("⭐ <b>In focus</b> · 1")
 
     monkeypatch.setattr(profile, "INCLUDE_INDUSTRY", False)
     assert matching.evaluate(pos) is None
@@ -491,7 +504,8 @@ def test_run_marks_industry_positions(bot, monkeypatch):
         make_post("at://2", "We are hiring a postdoc in plant genetics", NOW, bio="Plant lab"),
     ]
     assert bot(posts) == 0
-    text = bot.sent[0]
+    text = "\n".join(bot.sent)
+    assert len(bot.sent) == 2                       # one message per section
     assert "#Industry #Scientist #USA #Epigenetics" in text
     assert "Scientist, Epigenomics — Genentech" in text
     assert "#Postdoc #USA" in text
@@ -709,3 +723,181 @@ def test_dry_run_prints_plain_text(bot, capsys):
     assert bot(posts, "--dry-run") == 0
     out = capsys.readouterr().out
     assert "Polycomb & chromatin" in out and "&amp;" not in out
+
+
+# --- routing: PhD channel, bioinformatics, off-topic, paired posts ----------
+
+def test_students_are_skipped_without_a_destination(monkeypatch):
+    phd_post = make_position("PhD position in yeast metabolism")
+    phd_job = make_position("Join us to work on yeast metabolism", position_type=["PhD Student"])
+    assert matching.triage(phd_post) == 2
+    assert matching.evaluate(phd_job)["stream"] == "phd"
+
+    monkeypatch.setattr(matching, "include_students", False)
+    assert matching.triage(phd_post) is None                 # no LLM call at all
+    assert matching.triage(make_position("PhD position on chromatin loops")) is None
+    assert matching.evaluate(phd_job) is None
+    # Research-staff posts that merely mention a PhD are unaffected.
+    assert matching.triage(make_position("Postdoc in yeast metabolism, PhD required")) == 1
+    mixed = make_position("We hire in yeast metabolism", position_type=["PhD Student", "Postdoc"])
+    assert matching.evaluate(mixed)["stream"] == "main"
+
+
+@pytest.mark.parametrize("text,title,expected", [
+    ("Postdoc in computational genomics and machine learning", None, True),
+    ("Postdoc developing bioinformatics pipelines for single-cell data", None, True),
+    ("Postdoc in computational and experimental genomics, wet-lab work included", None, False),
+    ("Postdoc on mitochondria in yeast", None, False),
+    ("Join the lab", "Bioinformatician (genomics)", True),
+])
+def test_bioinformatics_detection(text, title, expected):
+    result = matching.evaluate(make_position(text, job_title=title))
+    assert result["is_computational"] is expected
+    assert ("#Bioinf" in digest.format_compact(result)) is expected
+
+
+def test_computer_science_discipline_counts_as_bioinformatics():
+    pos = make_position("Postdoc on gene networks", disciplines=["Biology", "Computer Science"])
+    assert matching.evaluate(pos)["is_computational"] is True
+
+
+@pytest.mark.parametrize("text", [
+    "Radboud is hiring: postdoc position ecology of waterway management #postdoc #biology",
+    "Postdoctoral researcher in 3D geometric morphometrics and zooarchaeology #biologicalsciences",
+    "Postdoc in cognitive-affective neuroscience of the sense of self",
+    "Staff research associate, pediatrics #biology #microbiomesequencing",
+])
+def test_off_topic_posts_are_skipped(text):
+    assert matching.triage(make_position(text)) is None
+    assert matching.evaluate(make_position(text)) is None
+
+
+def test_off_topic_wording_does_not_hide_matching_topics():
+    assert matching.triage(make_position("Postdoc: chromatin dynamics in crop plants")) == 0
+    assert matching.triage(
+        make_position("Postdoc in developmental biology of livestock embryos, agricultural institute")
+    ) == 1
+
+
+def test_route_splits_by_stream_and_kind():
+    staff = matching.evaluate(make_position("Postdoc on yeast mitochondria", uri="at://wet"))
+    comp = matching.evaluate(make_position("Postdoc in computational genomics", uri="at://comp"))
+    focus_comp = matching.evaluate(make_position("Postdoc in computational Hi-C analysis", uri="at://fc"))
+    student = matching.evaluate(make_position("Work on yeast mitochondria", uri="at://phd",
+                                              position_type=["PhD Student"]))
+    everything = [staff, comp, focus_comp, student]
+
+    def uris(routed):
+        return {chat: [p["uri"] for p in group] for chat, group in routed.items()}
+
+    assert uris(digest.route(everything, {"main": "1", "phd": None, "bioinf": "1"})) == {
+        "1": ["at://wet", "at://comp", "at://fc"]}
+    assert uris(digest.route(everything, {"main": "1", "phd": "2", "bioinf": "3"})) == {
+        "1": ["at://wet", "at://fc"], "3": ["at://comp"], "2": ["at://phd"]}
+
+    # Students sharing the main chat get their own last section.
+    messages = digest.build_messages(everything, students_apart=True)
+    assert [text.split("\n")[0] for text, _ in messages] == [
+        "⭐ <b>In focus</b> · 1", "🧪 <b>Wet lab</b> · 1",
+        "💻 <b>Bioinformatics</b> · 1", "🎓 <b>PhD &amp; Master</b> · 1",
+    ]
+
+
+def test_same_title_from_same_account_is_a_duplicate():
+    first = make_position("Job ID 1. Extract: embryo work at UQ", uri="at://a", user="agg",
+                          job_title="Postdoctoral Research Fellow in Embryo Biotechnology")
+    again = make_position("UQ is hiring, see the link", uri="at://b", user="agg",
+                          job_title="Postdoctoral research fellow in embryo biotechnology")
+    generic_1 = make_position("Protein folding in yeast, Cambridge", uri="at://c", user="agg",
+                              job_title="Postdoctoral Researcher")
+    generic_2 = make_position("Mitochondria in zebrafish, Oslo", uri="at://d", user="agg",
+                              job_title="Postdoctoral Researcher")
+    kept = digest.drop_duplicates([first, again, generic_1, generic_2], [])
+    assert [p["uri"] for p in kept] == ["at://a", "at://c", "at://d"]
+
+
+def test_paired_link_and_description_posts_are_merged():
+    link = make_post(
+        "at://link",
+        "Aston University is hiring: https://tenuretracker.info/l/chO0lnAi/"
+        "1902-26-postdoctoral-research-assistant?utm_source=bsky #postdoc #neuroscience",
+        "2026-11-14T00:19:42.786Z", bio="jobs", user="jobs.example")
+    description = make_post(
+        "at://desc",
+        "Job ID: 1902-26 Extract: We are seeking a Postdoctoral Researcher to join a "
+        "Wellcome-funded programme focused on autoimmune encephalitis.",
+        "2026-11-14T00:19:43.395Z", bio="jobs", user="jobs.example")
+    later = make_post(
+        "at://later", "Extract: Postdoc position in protein engineering at the Prywes Lab.",
+        "2026-11-14T00:27:41.000Z", bio="jobs", user="jobs.example")
+    other_account = make_post(
+        "at://lab", "We are hiring a postdoc in yeast genetics", "2026-11-14T00:19:43.000Z")
+
+    merged = run.merge_companions([p.to_dict() for p in (later, description, other_account, link)])
+    by_uri = {p["uri"]: p for p in merged}
+    assert set(by_uri) == {"at://desc", "at://later", "at://lab"}
+    joined = by_uri["at://desc"]
+    assert joined["raw_text"].startswith("Job ID: 1902-26 Extract:")      # description leads
+    assert "tenuretracker.info/l/chO0lnAi" in joined["raw_text"]
+    assert "tenuretracker.info" in joined["metadata_text"]
+    assert by_uri["at://later"]["raw_text"].startswith("Extract: Postdoc position in protein")
+
+    # Shown without the aggregator boilerplate.
+    shown = digest.format_compact(matching.evaluate({
+        **joined, "is_verified_job": True, "disciplines": ["Biology"],
+        "position_type": ["Postdoc"], "country": "UK"}))
+    assert "\nWe are seeking a Postdoctoral Researcher" in shown
+
+
+def test_reply_parts_are_merged_even_when_slow():
+    first = make_post("at://1", "We are hiring a postdoc in yeast genetics (1/2)",
+                      "2026-11-14T10:00:00.000Z", user="lab.example")
+    second = make_post("at://2", "Details and how to apply: https://example.org/job (2/2)",
+                       "2026-11-14T10:03:00.000Z", user="lab.example")
+    second.reply_parent_uri = "at://1"
+    merged = run.merge_companions([first.to_dict(), second.to_dict()])
+    assert [p["uri"] for p in merged] == ["at://1"]
+    assert "example.org/job" in merged[0]["raw_text"]
+
+
+def test_run_sends_students_to_their_own_channel(bot, monkeypatch):
+    chats = []
+    monkeypatch.setattr(digest, "send_message",
+                        lambda token, chat, text: chats.append((chat, text)) or True)
+    posts = [
+        make_post("at://1", "We are hiring a postdoc in yeast mitochondria", NOW, bio="x"),
+        make_post("at://2", "We are hiring a PhD student in yeast mitochondria", NOW, bio="x"),
+    ]
+    assert bot(posts) == 0                       # no PhD channel: only the postdoc
+    assert [chat for chat, _ in chats] == ["123"]
+
+    chats.clear()
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID_PHD", "@phd_jobs")
+    more = posts + [make_post("at://3", "We are hiring a PhD student in zebrafish embryos", NOW, bio="x")]
+    assert bot(more) == 0
+    assert [chat for chat, _ in chats] == ["@phd_jobs"]
+    assert "zebrafish" in chats[0][1]
+
+
+def test_destinations_follow_profile(monkeypatch):
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID", "1")
+    assert run.destinations() == {"main": "1", "phd": None, "bioinf": "1"}
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID_PHD", "2")
+    monkeypatch.setenv("TELEGRAM_CHANNEL_ID_BIOINF", "3")
+    assert run.destinations() == {"main": "1", "phd": "2", "bioinf": "3"}
+    monkeypatch.setattr(profile, "PHD_POSITIONS", "main")
+    assert run.destinations()["phd"] == "1"
+    monkeypatch.setattr(profile, "PHD_POSITIONS", "off")
+    assert run.destinations()["phd"] is None
+
+
+def test_archive_is_upgraded_when_columns_change(tmp_path):
+    import csv
+    path = tmp_path / "positions.csv"
+    path.write_text("sent_at,created,text\n2026-11-16,2026-11-15,old row\n", encoding="utf-8")
+    pos = matching.evaluate(make_position("Postdoc in computational genomics"))
+    run.append_archive(path, [pos], "2026-11-17")
+    rows = list(csv.DictReader(path.open(encoding="utf-8")))
+    assert list(rows[0].keys()) == run.ARCHIVE_FIELDS
+    assert rows[0]["text"] == "old row" and rows[0]["kind"] == ""
+    assert rows[1]["kind"] == "bioinformatics" and rows[1]["sent_at"] == "2026-11-17"

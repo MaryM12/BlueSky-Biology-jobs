@@ -17,17 +17,47 @@ SEPARATOR = "\n\n━━━━━━━━━━━━━━━\n\n"
 SEND_DELAY = 1.2          # seconds between messages (Telegram: ~1 msg/s per chat)
 SIMILARITY_THRESHOLD = 0.8
 
-SECTIONS = [
-    ("⭐ <b>In focus</b>", lambda p: p.get("is_focus")),
-    ("🔬 <b>Postdoc &amp; research staff</b>",
-     lambda p: not p.get("is_focus") and not p.get("is_industry")
-     and p.get("is_priority_level")),
-    ("🏢 <b>Industry R&amp;D</b>",
-     lambda p: not p.get("is_focus") and p.get("is_industry")),
-    ("🎓 <b>PhD &amp; other</b>",
-     lambda p: not p.get("is_focus") and not p.get("is_industry")
-     and not p.get("is_priority_level")),
-]
+# Section order inside one chat. Each section starts a new message.
+SECTION_TITLES = {
+    "focus": "⭐ <b>In focus</b>",
+    "wet": "🧪 <b>Wet lab</b>",
+    "bioinf": "💻 <b>Bioinformatics</b>",
+    "industry": "🏢 <b>Industry R&amp;D</b>",
+    "students": "🎓 <b>PhD &amp; Master</b>",
+}
+
+
+def section_key(pos: dict, students_apart: bool = False) -> str:
+    """Section of a vacancy. ``students_apart`` puts PhD/Master ones last
+    (used when they share a chat with research-staff positions)."""
+    if students_apart and pos.get("stream") == "phd":
+        return "students"
+    if pos.get("is_focus"):
+        return "focus"
+    if pos.get("is_industry"):
+        return "industry"
+    if pos.get("is_computational"):
+        return "bioinf"
+    return "wet"
+
+
+def route(positions: list[dict], chats: dict) -> dict[str, list[dict]]:
+    """Split vacancies by destination chat.
+
+    ``chats`` maps "main", "phd" and "bioinf" to chat ids; "phd" may be None
+    (student positions are then left out), "bioinf" defaults to the main chat.
+    """
+    routed: dict[str, list[dict]] = {}
+    for pos in positions:
+        if pos.get("stream") == "phd":
+            chat = chats.get("phd")
+        elif section_key(pos) == "bioinf":
+            chat = chats.get("bioinf") or chats["main"]
+        else:
+            chat = chats["main"]
+        if chat:
+            routed.setdefault(str(chat), []).append(pos)
+    return routed
 
 
 # --- duplicate detection ----------------------------------------------------
@@ -36,23 +66,35 @@ def _tokens(text: str) -> set[str]:
     return set(re.findall(r"[a-z0-9]{3,}", text.lower()))
 
 
+def _title_key(position: dict) -> str | None:
+    """Same account + same specific title = the same vacancy announced twice."""
+    words = re.findall(r"[a-z0-9]+", (position.get("job_title") or "").lower())
+    if len(words) < 4:          # "Postdoctoral Researcher" alone says nothing
+        return None
+    return f"{(position.get('user') or '').lower()}|{' '.join(words)}"
+
+
 def fingerprint(position: dict) -> dict:
     """Compact record of a vacancy used to recognise re-announcements."""
     text = preprocess_text(position.get("raw_text") or position.get("message") or "")
     return {
         "uri": position.get("uri"),
         "app_url": normalize_application_url(position.get("application_url")),
+        "title": _title_key(position),
         "text": text[:400],
     }
 
 
 def is_duplicate(candidate: dict, known: list[dict]) -> bool:
-    """Same post, same application link, or near-identical wording."""
+    """Same post, same application link, same title from the same account,
+    or near-identical wording."""
     cand_tokens = _tokens(candidate["text"])
     for other in known:
         if candidate["uri"] and candidate["uri"] == other.get("uri"):
             return True
         if candidate["app_url"] and candidate["app_url"] == other.get("app_url"):
+            return True
+        if candidate.get("title") and candidate["title"] == other.get("title"):
             return True
         other_tokens = _tokens(other.get("text") or "")
         if len(cand_tokens) >= 6 and len(other_tokens) >= 6:
@@ -98,6 +140,8 @@ def _links(pos: dict) -> str:
 
 def _snippet(pos: dict, length: int) -> str:
     text = " ".join((pos.get("raw_text") or pos.get("message") or "").split())
+    # Aggregator boilerplate: "Job ID: X-123 Extract: The lab seeks..."
+    text = re.sub(r"^(Job ID:.{0,40}?)?Extract:\s*", "", text)
     if len(text) > length:
         text = text[:length - 1].rstrip() + "…"
     return text
@@ -124,6 +168,8 @@ def format_compact(pos: dict) -> str:
     """Short version used for vacancies outside the focus topics."""
     tags = _base_tags(pos)
     tags += [_tag(t) for t in pos.get("wet_lab_topics") or []]
+    if pos.get("is_computational"):
+        tags.append("#Bioinf")
     lines = [html.escape(" ".join(t for t in tags if t))]
 
     title = pos.get("job_title")
@@ -151,6 +197,8 @@ def format_position(pos: dict) -> str:
     tags = _base_tags(pos)
     tags += [_tag(t) for t in pos.get("focus_topics") or []]
     tags += [_tag(t) for t in pos.get("wet_lab_topics") or []]
+    if pos.get("is_computational"):
+        tags.append("#Bioinf")
     header = " ".join(t for t in tags if t)
     if pos.get("is_focus"):
         header = f"⭐ {header}"
@@ -191,39 +239,37 @@ def summary_line(positions: list[dict]) -> str:
 def build_messages(
     positions: list[dict],
     title: str | None = None,
+    students_apart: bool = False,
 ) -> list[tuple[str, list[dict]]]:
-    """Pack ranked vacancies into Telegram-sized messages, grouped by section.
+    """Pack ranked vacancies into Telegram-sized messages, section by section.
 
-    Returns (html_text, positions_in_this_message) pairs so delivery can be
-    tracked per message. ``title`` is prepended to the first message.
+    Every section starts a new message, so a whole section can be skipped at
+    a glance. Returns (html_text, positions_in_this_message) pairs so delivery
+    can be tracked per message. ``title`` is prepended to the first message.
     """
-    # (text, position, joiner placed before this block when it is not first)
-    blocks: list[tuple[str, dict, str]] = []
-    for heading, belongs in SECTIONS:
-        first = True
-        for pos in positions:
-            if not belongs(pos):
-                continue
-            compact = profile.COMPACT_NON_FOCUS and not pos.get("is_focus")
-            body = format_compact(pos) if compact else format_position(pos)
-            joiner = "\n\n" if compact and not first else SEPARATOR
-            blocks.append((f"{heading}\n\n{body}" if first else body, pos, joiner))
-            first = False
-    if title and blocks:
-        blocks[0] = (f"{title}\n\n{blocks[0][0]}",) + blocks[0][1:]
-
     messages: list[tuple[str, list[dict]]] = []
-    current, current_positions = "", []
-    for block, pos, joiner in blocks:
-        if len(block) > TELEGRAM_MAX_LENGTH:
-            block = block[:TELEGRAM_MAX_LENGTH - 1] + "…"
-        candidate = block if not current else current + joiner + block
-        if len(candidate) > TELEGRAM_MAX_LENGTH and current:
-            messages.append((current, current_positions))
-            current, current_positions = block, [pos]
-        else:
-            current, current_positions = candidate, current_positions + [pos]
-    if current:
+    for key, heading in SECTION_TITLES.items():
+        members = [p for p in positions if section_key(p, students_apart) == key]
+        if not members:
+            continue
+        current = f"{heading} · {len(members)}"
+        if title and not messages:
+            current = f"{title}\n\n{current}"
+        current_positions: list[dict] = []
+        joiner = "\n\n"
+        for pos in members:
+            compact = profile.COMPACT_NON_FOCUS and not pos.get("is_focus")
+            block = format_compact(pos) if compact else format_position(pos)
+            if len(current) + len(joiner) + len(block) > TELEGRAM_MAX_LENGTH and current_positions:
+                messages.append((current, current_positions))
+                current, current_positions, joiner = f"{heading} (cont.)", [], "\n\n"
+            if len(current) + len(joiner) + len(block) > TELEGRAM_MAX_LENGTH:
+                # A single oversized entry (very long links): plain excerpt only,
+                # so no HTML tag can be cut in half.
+                block = html.escape(_snippet(pos, 300))
+            current = current + joiner + block
+            current_positions = current_positions + [pos]
+            joiner = "\n\n" if compact else SEPARATOR
         messages.append((current, current_positions))
     return messages
 
@@ -261,10 +307,12 @@ def send_message(token: str, chat_id: str, html_text: str) -> bool:
     return False
 
 
-def deliver(positions: list[dict], token: str, chat_id: str) -> tuple[list[dict], list[dict]]:
-    """Send the digest. Returns (delivered, not_delivered) vacancies."""
+def deliver(positions: list[dict], token: str, chat_id: str,
+            students_apart: bool = False) -> tuple[list[dict], list[dict]]:
+    """Send one chat's digest. Returns (delivered, not_delivered) vacancies."""
     delivered: list[dict] = []
-    messages = build_messages(positions, title=summary_line(positions))
+    messages = build_messages(positions, title=summary_line(positions),
+                              students_apart=students_apart)
     for index, (text, in_message) in enumerate(messages):
         if not send_message(token, chat_id, text):
             remaining = [p for _, group in messages[index:] for p in group]

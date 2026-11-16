@@ -25,8 +25,10 @@ load_dotenv()
 from src.llm import LLMUnavailableError
 from src.logger import setup_logger
 
-from . import profile
-from .digest import build_messages, deliver, drop_duplicates, fingerprint, summary_line
+from . import matching, profile
+from .digest import (
+    build_messages, deliver, drop_duplicates, fingerprint, route, summary_line,
+)
 from .llm import PersonalLLM
 from .matching import all_queries, evaluate, rank, triage
 from .state import BotState, utc_now_iso
@@ -43,9 +45,10 @@ KEPT_FIELDS = [
     "job_title", "hiring_organization", "application_url",
     "application_deadline", "location_text",
     "focus_topics", "wet_lab_topics", "is_focus", "is_priority_level",
+    "is_computational", "stream",
 ]
 ARCHIVE_FIELDS = [
-    "sent_at", "created", "is_focus", "topics", "sector", "position_type", "country",
+    "sent_at", "created", "is_focus", "topics", "sector", "kind", "position_type", "country",
     "job_title", "hiring_organization", "application_deadline",
     "application_url", "url", "user", "text",
 ]
@@ -67,6 +70,69 @@ def first_run_since(days: int) -> str:
 POST_FIELDS = ["uri", "url", "user", "created", "message", "raw_text", "metadata_text"]
 
 
+_URL = re.compile(r"https?://\S+")
+COMPANION_WINDOW_SECONDS = 5
+
+
+def _created_at(data: dict) -> datetime | None:
+    try:
+        return datetime.fromisoformat((data.get("created") or "").replace("Z", "+00:00"))
+    except ValueError:
+        return None
+
+
+def _is_bare_link(text: str) -> bool:
+    """A short "X is hiring: <link> #tags" announcement with no description."""
+    plain = re.sub(r"[#@]\S+", " ", _URL.sub(" ", text))
+    return bool(_URL.search(text)) and len(plain.split()) <= 14
+
+
+def merge_companions(posts: list[dict]) -> list[dict]:
+    """Join posts that one account published as parts of one announcement.
+
+    Job accounts often publish a vacancy as a short "X is hiring: <link>" post
+    and, a second later, a reply with the description; labs post threads the
+    same way. Posts by the same account within a few seconds of each other (or
+    replying to each other) are folded into one, so the vacancy costs a single
+    LLM call and is sent once. A bare link part is moved to the end so the
+    description leads.
+    """
+    ordered = sorted(
+        (dict(p) for p in posts),
+        key=lambda p: (p.get("user") or "", p.get("created") or ""),
+    )
+    groups: list[list[dict]] = []
+    for post in ordered:
+        last = groups[-1][-1] if groups else None
+        joined = False
+        if last is not None and last.get("user") == post.get("user"):
+            a, b = _created_at(last), _created_at(post)
+            close = a and b and abs((b - a).total_seconds()) <= COMPANION_WINDOW_SECONDS
+            reply = post.get("reply_parent_uri") and post.get("reply_parent_uri") in {
+                member.get("uri") for member in groups[-1]
+            }
+            joined = bool(close or reply)
+        if joined:
+            groups[-1].append(post)
+        else:
+            groups.append([post])
+
+    merged = []
+    for group in groups:
+        if len(group) == 1:
+            merged.append(group[0])
+            continue
+        parts = sorted(group, key=lambda p: _is_bare_link(p.get("raw_text") or ""))
+        head = dict(parts[0])
+        for part in parts[1:]:
+            extra = part.get("raw_text") or ""
+            for key in ("raw_text", "message", "metadata_text"):
+                if head.get(key):
+                    head[key] = f"{head[key]}\n\n{extra}"
+        merged.append(head)
+    return merged
+
+
 def build_candidates(queue: list[dict], posts) -> tuple[list[tuple[int, dict]], int]:
     """Triage waiting and new posts; returns (candidates in LLM order, skipped).
 
@@ -74,7 +140,8 @@ def build_candidates(queue: list[dict], posts) -> tuple[list[tuple[int, dict]], 
     """
     candidates = []
     skipped = 0
-    for data in list(queue) + [post.to_dict() for post in posts]:
+    fresh = merge_companions([post.to_dict() for post in posts])
+    for data in list(queue) + fresh:
         tier = triage(data)
         if tier is None:
             skipped += 1
@@ -159,12 +226,39 @@ def default_llm_delay() -> float:
     return 7.0 if groq_only else 1.0
 
 
+def destinations() -> dict:
+    """Chat ids per stream, from the environment and profile.PHD_POSITIONS."""
+    main = os.environ.get("TELEGRAM_CHANNEL_ID", "")
+    if profile.PHD_POSITIONS == "main":
+        phd = main
+    elif profile.PHD_POSITIONS == "channel":
+        phd = os.environ.get("TELEGRAM_CHANNEL_ID_PHD") or None
+    else:
+        phd = None
+    return {
+        "main": main,
+        "phd": phd,
+        "bioinf": os.environ.get("TELEGRAM_CHANNEL_ID_BIOINF") or main,
+    }
+
+
 def append_archive(path: Path, positions: list[dict], sent_at: str) -> None:
     """Append delivered vacancies to a CSV you can browse on GitHub."""
     if not positions:
         return
     path.parent.mkdir(parents=True, exist_ok=True)
     is_new = not path.exists()
+    if not is_new:
+        # Columns were added over time: bring an older file to the current header.
+        with path.open(newline="", encoding="utf-8") as handle:
+            reader = csv.DictReader(handle)
+            if reader.fieldnames != ARCHIVE_FIELDS:
+                old_rows = list(reader)
+                with path.open("w", newline="", encoding="utf-8") as out:
+                    writer = csv.DictWriter(out, fieldnames=ARCHIVE_FIELDS,
+                                            extrasaction="ignore", restval="")
+                    writer.writeheader()
+                    writer.writerows(old_rows)
     with path.open("a", newline="", encoding="utf-8") as handle:
         writer = csv.DictWriter(handle, fieldnames=ARCHIVE_FIELDS)
         if is_new:
@@ -177,6 +271,7 @@ def append_archive(path: Path, positions: list[dict], sent_at: str) -> None:
                 "is_focus": "yes" if pos.get("is_focus") else "",
                 "topics": ", ".join(topics),
                 "sector": pos.get("sector") or "Academia",
+                "kind": "bioinformatics" if pos.get("is_computational") else "wet lab",
                 "position_type": ", ".join(pos.get("position_type") or []),
                 "country": pos.get("country"),
                 "job_title": pos.get("job_title"),
@@ -212,10 +307,18 @@ def main(argv=None) -> int:
     args = parser.parse_args(argv)
 
     token = os.environ.get("TELEGRAM_BOT_TOKEN", "")
-    chat_id = os.environ.get("TELEGRAM_CHANNEL_ID", "")
-    if not args.dry_run and not (token and chat_id):
+    chats = destinations()
+    if not args.dry_run and not (token and chats["main"]):
         logger.error("Set TELEGRAM_BOT_TOKEN and TELEGRAM_CHANNEL_ID (or use --dry-run)")
         return 2
+    if args.dry_run and not chats["main"]:
+        chats = {**chats, "main": "main chat", "bioinf": chats["bioinf"] or "main chat"}
+        if profile.PHD_POSITIONS == "main":
+            chats["phd"] = "main chat"
+    # PhD / Master posts are not even classified when they have no destination.
+    matching.include_students = chats["phd"] is not None
+    logger.info("PhD/Master positions: "
+                + ("sent" if matching.include_students else "off (no destination)"))
 
     # Imported lazily: both modules log in / read keys from the environment.
     from bluesky_search import get_classifier
@@ -274,17 +377,28 @@ def main(argv=None) -> int:
     )
 
     ranked = rank(state.pending + matched)
-    to_send = drop_duplicates(ranked, state.sent)
+    unique = drop_duplicates(ranked, state.sent)
+    routed = route(unique, chats)
+    to_send = [p for group in routed.values() for p in group]
     logger.info(f"{len(to_send)} vacancies to send "
-                f"({len(ranked) - len(to_send)} duplicates dropped)")
+                f"({len(ranked) - len(unique)} duplicates dropped)")
 
     if args.dry_run:
-        for text, _ in build_messages(to_send, title=summary_line(to_send)):
-            print("\n" + _plain(text))
+        for chat, group in routed.items():
+            print(f"\n===== chat {chat} =====")
+            messages = build_messages(group, title=summary_line(group),
+                                      students_apart=chat == str(chats["main"]))
+            for text, _ in messages:
+                print("\n" + _plain(text))
         logger.info("Dry run: nothing sent, state not saved")
         return 0
 
-    delivered, remaining = deliver(to_send, token, chat_id) if to_send else ([], [])
+    delivered, remaining = [], []
+    for chat, group in routed.items():
+        done, left = deliver(group, token, chat,
+                             students_apart=chat == str(chats["main"]))
+        delivered += done
+        remaining += left
     sent_at = utc_now_iso()
     state.record_sent([{**fingerprint(p), "sent_at": sent_at} for p in delivered])
     state.pending = remaining
@@ -295,7 +409,7 @@ def main(argv=None) -> int:
         logger.error(f"Telegram delivery failed; {len(remaining)} vacancies kept "
                      "for the next run")
         return 1
-    logger.info(f"Sent {len(delivered)} vacancies")
+    logger.info(f"Sent {len(delivered)} vacancies to {len(routed)} chat(s)")
     return 0
 
 
