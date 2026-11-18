@@ -1,686 +1,8 @@
 {
  "version": 1,
- "updated_at": "2026-11-18T14:39:40.000Z",
- "last_timestamp": "2026-11-18T14:19:35.422Z",
- "pending": [
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lkdvgle62r",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2lkdvgle62r",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T12:23:22.567102396Z",
-   "raw_text": "Extract: Postdoctoral position in Gu Lab at Harvard Medical School to study cellular and physiological mechanisms of neurovascular interactions and blood-brain barrier function. PhD required.\n\nHarvard University (@harvard.edu) is hiring:\nhttps://tenuretracker.info/l/CH_dsA6nr/postdoctoral-fellow-in-neurobiology-and-neurovascular-interactions-gu-lab?utm_source=bsky\n\n#postdoc #neuroscience #neurobiology",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "postdoctoral fellow in neurobiology and neurovascular interactions",
-   "hiring_organization": "Harvard Medical School",
-   "application_url": "https://tenuretracker.info/l/CH_dsA6nr/postdoctoral-fellow-in-neurobiology-and-neurovascular-interactions-gu-lab?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [
-    "Neuro"
-   ],
-   "wet_lab_topics": [],
-   "is_focus": true,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2knacauuj25",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2knacauuj25",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T03:42:23.279093364Z",
-   "raw_text": "Job ID: OT-30962\nExtract: Postdoctoral position to investigate transcriptional and chromatin-based regulatory mechanisms governing effector gene expression and virulence in the blast fungus Magnaporthe oryzae, combining functional genomics, molecular biology and computational approaches.\n\nInstitut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement is hiring:\nhttps://tenuretracker.info/l/alAUs_d8v/postdoctoral-researcher-in-fungal-pathogen-gene-regulation-and-effector-evolutio?utm_source=bsky\n\n#postdoc #biology",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "France",
-   "disciplines": [
-    "Biology",
-    "Computer Science"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Postdoctoral researcher in fungal pathogen gene regulation and effector evolution",
-   "hiring_organization": "Institut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement",
-   "application_url": "https://tenuretracker.info/l/alAUs_d8v/postdoctoral-researcher-in-fungal-pathogen-gene-regulation-and-effector-evolutio?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [
-    "Epigenetics"
-   ],
-   "wet_lab_topics": [
-    "MolBio"
-   ],
-   "is_focus": true,
-   "is_priority_level": true,
-   "is_computational": true,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lo3pp7cj2b",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2lo3pp7cj2b",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T13:30:23.088558691Z",
-   "raw_text": "Extract: We invite applicants for a postdoctoral fellow position in the laboratory of Dr. Marcia Haigis at Harvard Medical School. The lab investigates metabolic regulation in health, aging, and disease, focusing on new metabolic pathways.\n\nHarvard University (@harvard.edu) is hiring:\nhttps://tenuretracker.info/l/yriz7_dts/hms-postdoctoral-fellow-in-cell-biology?utm_source=bsky\n\n#postdoc #biology #cellbiology",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology",
-    "Medicine"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "postdoctoral fellow",
-   "hiring_organization": "Harvard Medical School",
-   "application_url": "https://tenuretracker.info/l/yriz7_dts/hms-postdoctoral-fellow-in-cell-biology?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lmvedp752r",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2lmvedp752r",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T13:08:55.962747045Z",
-   "raw_text": "Extract: The Wyss Institute at Harvard University seeks a postdoctoral fellow to develop nucleic-acid-based delivery technologies for gene editing. Responsibilities include conducting research, applying for funding, and mentoring lab members.\n\nHarvard University (@harvard.edu) is hiring:\nhttps://tenuretracker.info/l/RiC_dw4Kr/postdoctoral-fellow-delivery-vectors-for-gene-editing?utm_source=bsky\n\n#postdoc #geneediting #biologicalengineering",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "postdoctoral fellow",
-   "hiring_organization": "Wyss Institute at Harvard University",
-   "application_url": "https://tenuretracker.info/l/RiC_dw4Kr/postdoctoral-fellow-delivery-vectors-for-gene-editing?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2llpbwfq62f",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2llpbwfq62f",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T12:47:38.504568596Z",
-   "raw_text": "Extract: The Naxerova lab at Harvard Medical School invites applications for a postdoctoral fellow position focused on somatic mutations and cell populations. Candidates should have a Ph.D. or M.D./Ph.D. in relevant fields and research experience in experimental or computational biology.\n\nHarvard University (@harvard.edu) is hiring:\nhttps://tenuretracker.info/l/KFVbpa9w/hms-postdoctoral-fellow-in-genetics-naxerova?utm_source=bsky\n\n#postdoc #biology #genomics",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology",
-    "Computer Science"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "postdoctoral fellow position",
-   "hiring_organization": "Harvard Medical School",
-   "application_url": "https://tenuretracker.info/l/KFVbpa9w/hms-postdoctoral-fellow-in-genetics-naxerova?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lhxfxdjn2i",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2lhxfxdjn2i",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T11:40:36.051051874Z",
-   "raw_text": "Job ID: FBSMB1324\nExtract: We seek a molecular and cell biologist for a Research Fellow position focusing on host-pathogen interactions of bunyaviruses. The role involves genome-wide screening and proteomic approaches.\n\nUniversity of Leeds (@universityofleeds.bsky.social) is hiring:\nhttps://tenuretracker.info/l/b1R1Y29P/research-fellow-in-host-pathogen-interactions-fbsmb1324?utm_source=bsky\n\n#postdoc #biology #hostpathogeninteractions",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "UK",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Research Fellow in host-pathogen interactions",
-   "hiring_organization": "University of Leeds",
-   "application_url": "https://tenuretracker.info/l/b1R1Y29P/research-fellow-in-host-pathogen-interactions-fbsmb1324?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "CellBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l7tpod2j2i",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2l7tpod2j2i",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T09:15:21.845720542Z",
-   "raw_text": "New York Genome Center is hiring:\nhttps://tenuretracker.info/l/gwYz7jbp/postdoctoral-training-fellowships-in-psychiatric-genetics-and-functional-genomic?utm_source=bsky\n\n#postdoc #medicine #psychiatricgenetics",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Medicine",
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Postdoctoral Training Fellowships in Psychiatric Genetics and Functional Genomics",
-   "hiring_organization": "New York Genome Center",
-   "application_url": "https://tenuretracker.info/l/gwYz7jbp/postdoctoral-training-fellowships-in-psychiatric-genetics-and-functional-genomic?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": "New York",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:lqprvkf46vsqzkf24owkzcws/app.bsky.feed.post/3n2l7sigrz225",
-   "url": "https://bsky.app/profile/nano4ocean.bsky.social/post/3n2l7sigrz225",
-   "user": "nano4ocean.bsky.social",
-   "created": "2026-11-18T09:14:41.195Z",
-   "raw_text": "#OceanOpportunities Open position: Research Scientist in the field of molecular zooplankton biodiversity - Deadline 22 November 2026 \nhttps://nf-pogo-alumni.org/18112026-7/",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "Unknown",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Research Scientist in the field of molecular zooplankton biodiversity",
-   "hiring_organization": "NF-POGO Alumni Network",
-   "application_url": "https://nf-pogo-alumni.org/18112026-7/",
-   "application_deadline": "2026-11-22",
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:5cvdt3gg65ivoaxkxtdmnb7x/app.bsky.feed.post/3n2l7o567ns2a",
-   "url": "https://bsky.app/profile/plantubiquitin.bsky.social/post/3n2l7o567ns2a",
-   "user": "plantubiquitin.bsky.social",
-   "created": "2026-11-18T09:12:15.162Z",
-   "raw_text": "🔬I'm Hiring Two Postdocs!🔬\n\nPlease join us to work on endocytosis and ubiquitin-mediated protein degradation in plants in the beautiful city of Toulouse (France)\n\n@lrsv-toulouse.bsky.social @cnrsbiologie.bsky.social @agencerecherche.bsky.social \n#postdoc #endocytosis #ubiquitin",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "France",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Postdoc",
-   "hiring_organization": "CNRS",
-   "application_url": null,
-   "application_deadline": null,
-   "location_text": "Toulouse, France",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l6kgebnq2j",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2l6kgebnq2j",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T08:52:16.741089697Z",
-   "raw_text": "Extract: The University of Marburg seeks a Research Assistant (Postdoc) for a 3-year position in the Department of Biology. The role involves designing optical biosensors and conducting pharmacological assays. Applicants should have a Ph.D. in life sciences and experience in molecular biology.\n\n Philipps-Universität Marburg is hiring:\nhttps://tenuretracker.info/l/UEh5Z7vl/research-assistant-postdoc-universitat-marburg-3981?utm_source=bsky\n\n#postdoc #biology #developmentalgenetics",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "Germany",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Research Assistant (Postdoc)",
-   "hiring_organization": "Philipps-Universität Marburg",
-   "application_url": "https://tenuretracker.info/l/UEh5Z7vl/research-assistant-postdoc-universitat-marburg-3981?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "MolBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kzxxu37b2r",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2kzxxu37b2r",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T07:30:22.441809367Z",
-   "raw_text": "Extract: The CRG seeks a postdoctoral researcher to lead the discovery of genetic mechanisms of diabetes using large whole-genome sequencing cohorts. Candidates should have a PhD in statistical genetics or a related field and experience in genome analysis.\n\nCentro de Regulacion Genomica is hiring:\nhttps://tenuretracker.info/l/66h6HRTe/postdoc-decoding-the-genetics-of-young-onset-diabetes-crg-online-recruitment-por?utm_source=bsky\n\n#postdoc #genomics #medicine",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "Spain",
-   "disciplines": [
-    "Medicine",
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Postdoctoral researcher",
-   "hiring_organization": "Centro de Regulacion Genomica",
-   "application_url": "https://tenuretracker.info/l/66h6HRTe/postdoc-decoding-the-genetics-of-young-onset-diabetes-crg-online-recruitment-por?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:zoothx7yqas6hfyi7pq2al35/app.bsky.feed.post/3n2kr75mjok2o",
-   "url": "https://bsky.app/profile/abhinavsur.bsky.social/post/3n2kr75mjok2o",
-   "user": "abhinavsur.bsky.social",
-   "created": "2026-11-18T04:53:19.930Z",
-   "raw_text": "We're hiring! \n\nWe're looking for someone with zebrafish experience for an open Research Professional II position in my lab at the University of Arizona @uarizona.bsky.social \n\nPlease apply here: https://arizona.csod.com/ux/ats/careersite/4/home/requisition/27700?c=arizona\n\nAnticipated start date: Jan 2027\n\nPlease spread the word! 🙏",
-   "position_type": [
-    "Research Assistant"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Research Professional II",
-   "hiring_organization": "University of Arizona",
-   "application_url": "https://arizona.csod.com/ux/ats/careersite/4/home/requisition/27700?c=arizona",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "CellBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:qdqijlbcqt3mj37wqc3nvgva/app.bsky.feed.post/3n2kf46shq22a",
-   "url": "https://bsky.app/profile/lapph888.bsky.social/post/3n2kf46shq22a",
-   "user": "lapph888.bsky.social",
-   "created": "2026-11-18T01:16:55.609Z",
-   "raw_text": "The Champagne & Curley Labs at UT Austin are looking for a full-time Research Associate: rodent behavior, fiber photometry, surgeries, and wet lab work. A good fit for recent grads who want research experience before grad school. Please share!\nhttps://utaustin.wd1.myworkdayjobs.com/UTstaff/job/UT-MAIN-CAMPUS/Social-Science-Humanities-Research-Associate-I_R_00049730",
-   "position_type": [
-    "Research Assistant"
-   ],
-   "country": "USA",
-   "disciplines": [
-    "Biology",
-    "Psychology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Social Science/Humanities Research Associate I",
-   "hiring_organization": "University of Texas at Austin",
-   "application_url": "https://utaustin.wd1.myworkdayjobs.com/UTstaff/job/UT-MAIN-CAMPUS/Social-Science-Humanities-Research-Associate-I_R_00049730",
-   "application_deadline": null,
-   "location_text": "Austin, TX",
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "MolBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kozw7irr25",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2kozw7irr25",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T04:14:36.548037119Z",
-   "raw_text": "Roche Products Ltd, United Kingdom is hiring:\nhttps://tenuretracker.info/l/sXfLTAOK/you-hold-a-phd-in-immunology-neuroscience-or-a-closely-related-biological-discip?utm_source=bsky\n\n#postdoc #neuroscience #biology",
-   "position_type": [
-    "Postdoc"
-   ],
-   "country": "UK",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Industry",
-   "is_industry": true,
-   "job_title": null,
-   "hiring_organization": "Roche Products Ltd",
-   "application_url": "https://tenuretracker.info/l/sXfLTAOK/you-hold-a-phd-in-immunology-neuroscience-or-a-closely-related-biological-discip?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": true,
-   "is_computational": false,
-   "stream": "main"
-  },
-  {
-   "uri": "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n2loshmykn2y",
-   "url": "https://bsky.app/profile/academictransfer.bsky.social/post/3n2loshmykn2y",
-   "user": "academictransfer.bsky.social",
-   "created": "2026-11-18T13:43:06.352378+00:00",
-   "raw_text": "PhD Position: Immunology & Hematology https://www.academictransfer.com/365694/ @Sanquin",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Netherlands",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD Position: Immunology & Hematology",
-   "hiring_organization": "Sanquin",
-   "application_url": "https://www.academictransfer.com/365694/",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2lfxv2osz2v",
-   "url": "https://bsky.app/profile/dementiaresearcher.bsky.social/post/3n2lfxv2osz2v",
-   "user": "dementiaresearcher.bsky.social",
-   "created": "2026-11-18T11:05:04.316Z",
-   "raw_text": "How does ageing set the stage for Parkinson's? Prevent-PD is recruiting PhD students in Luxembourg to study organelle dysfunction, immune ageing and rejuvenation strategies. Funded, 36 months. Closes 3 Jan.\n\nhttps://www.dementiaresearcher.nihr.ac.uk/job/phd-ageing-parkinsons-disease-prevent-pd/",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Luxembourg",
-   "disciplines": [
-    "Medicine"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD students in Luxembourg to study organelle dysfunction, immune ageing and rejuvenation strategies",
-   "hiring_organization": "Luxembourg Centre for Systems Biomedicine and Luxembourg Institute of Health",
-   "application_url": "https://www.dementiaresearcher.nihr.ac.uk/job/phd-ageing-parkinsons-disease-prevent-pd/",
-   "application_deadline": null,
-   "location_text": "Luxembourg",
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "CellBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:5x6xdbbyvttxwctbb3tvp623/app.bsky.feed.post/3n2lfeevvsk2i",
-   "url": "https://bsky.app/profile/pauldufour80.bsky.social/post/3n2lfeevvsk2i",
-   "user": "pauldufour80.bsky.social",
-   "created": "2026-11-18T10:54:10.178Z",
-   "raw_text": "Excited to be advertising this project using isotopes, genomics and biologgers to investigate a striking change in chiffchaff migratory behaviour 🧬 🐦 open to all candidates, and supervised by the dream team of @pauldufour80.bsky.social  and Rachel Jeffreys. \n\nwww.findaphd.com/phds/project...",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Unknown",
-   "disciplines": [
-    "Biology",
-    "Ecology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": null,
-   "hiring_organization": null,
-   "application_url": null,
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:7vkiopsd7ho4ub6h7usqvbfm/app.bsky.feed.post/3n2lbcqiakc2d",
-   "url": "https://bsky.app/profile/ect-uk.bsky.social/post/3n2lbcqiakc2d",
-   "user": "ect-uk.bsky.social",
-   "created": "2026-11-18T09:41:40.238Z",
-   "raw_text": "There is a #PhD opportunity to work at the Palace Leas #LTE at @newcastleuni.bsky.social under the supervision of @dmevans.bsky.social Network #science of the #SoilMicrobiome: linking long-term fertilisation to plant function & productivity. \n\nDeadline: 24 Nov 2026 https://tinyurl.com/4adkeeyv 🌏",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "UK",
-   "disciplines": [
-    "Biology",
-    "Ecology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD opportunity to work at the Palace Leas LTE",
-   "hiring_organization": "Newcastle University",
-   "application_url": "https://tinyurl.com/4adkeeyv",
-   "application_deadline": "2026-11-24",
-   "location_text": "Palace Leas LTE",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:lqprvkf46vsqzkf24owkzcws/app.bsky.feed.post/3n2l7a23mgk2e",
-   "url": "https://bsky.app/profile/nano4ocean.bsky.social/post/3n2l7a23mgk2e",
-   "user": "nano4ocean.bsky.social",
-   "created": "2026-11-18T09:04:22.168Z",
-   "raw_text": "#OceanOpportunities Open position: PhD position on marine chronobiology and zooplankton - Deadline 03 January 2027 \nhttps://nf-pogo-alumni.org/18112026-6/",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Germany",
-   "disciplines": [
-    "Biology",
-    "Ecology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD position on marine chronobiology and zooplankton",
-   "hiring_organization": "Alfred Wegener Institute (AWI)",
-   "application_url": "https://nf-pogo-alumni.org/18112026-6/",
-   "application_deadline": "2027-01-03",
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l3y3luj32b",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2l3y3luj32b",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T08:06:13.721846082Z",
-   "raw_text": "University of Oulu (@oulu.fi) is hiring:\nhttps://tenuretracker.info/l/KsYmEWik/doctoral-researcher-molecular-and-reproductive-biology?utm_source=bsky\n\n#phd #biology #molecular",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Finland",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "Doctoral researcher – molecular and reproductive biology",
-   "hiring_organization": "University of Oulu",
-   "application_url": "https://tenuretracker.info/l/KsYmEWik/doctoral-researcher-molecular-and-reproductive-biology?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:ct7o5jemsawchk75tuov4kmz/app.bsky.feed.post/3n2kvdqygl22r",
-   "url": "https://bsky.app/profile/mschoelmerich.bsky.social/post/3n2kvdqygl22r",
-   "user": "mschoelmerich.bsky.social",
-   "created": "2026-11-18T06:07:29.427Z",
-   "raw_text": "🦠 PhD position in my lab at ETH Zurich, part of NCCR Genesis! Study alkaliphilic methanogenic archaea: how they conserve energy and get carbon at high pH, and how their methane differs from abiotic methane.\n\nFully funded, 4 yrs. Apply by 1 Dec 👇\nhttps://www.jobs.ethz.ch/job/view/12297",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Switzerland",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD position in my lab at ETH Zurich, part of NCCR Genesis",
-   "hiring_organization": "ETH Zurich",
-   "application_url": "https://www.jobs.ethz.ch/job/view/12297",
-   "application_deadline": "2026-12-01",
-   "location_text": "ETH Zurich",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:wvy5nncrtz4at73aqaabtatd/app.bsky.feed.post/3n2kkwyqsfd2q",
-   "url": "https://bsky.app/profile/laplaceexpert.bsky.social/post/3n2kkwyqsfd2q",
-   "user": "laplaceexpert.bsky.social",
-   "created": "2026-11-18T03:01:23Z",
-   "raw_text": "🎓 PhD position: Sodium Regulation of Eukaryotic DNA Replication 🇬🇧\n🏛️ Offered by University of York\n📍 United Kingdom\n💰 Funding: Scholarship\n⏳ Deadline: 6 January 2027\n🗓️ Duration: 4 years\n\n🔗 https://laplace.expert/en/apply/opportunities/af27d623-4ffc-453f-81dc-ebc3770dd680/?utm_source=bluesky&utm_medium=social&utm_campaign=position_text",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "UK",
-   "disciplines": [
-    "Biology"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD position: Sodium Regulation of Eukaryotic DNA Replication",
-   "hiring_organization": "University of York",
-   "application_url": "https://laplace.expert/en/apply/opportunities/af27d623-4ffc-453f-81dc-ebc3770dd680/?utm_source=bluesky&utm_medium=social&utm_campaign=position_text",
-   "application_deadline": "2027-01-06",
-   "location_text": "United Kingdom",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": false,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2km23kzkf2y",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2km23kzkf2y",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T03:21:01.051427912Z",
-   "raw_text": "Extract: PhD position in AI-powered mesenchymal stromal cell (MSC) tissue engineering platform development. Focus on automated cell production, machine learning for functional prediction, and regenerative medicine.\n\nUniversity of Bergen (@unibergen.bsky.social) is hiring:\nhttps://tenuretracker.info/l/JcXmuLcd/phd-position-3-years-at-the-department-of-clinical-dentistry?utm_source=bsky\n\n#phd #biology #machinelearning",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "Norway",
-   "disciplines": [
-    "Biology",
-    "Computer Science"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD position in AI-powered mesenchymal stromal cell (MSC) tissue engineering platform development",
-   "hiring_organization": "University of Bergen",
-   "application_url": "https://tenuretracker.info/l/JcXmuLcd/phd-position-3-years-at-the-department-of-clinical-dentistry?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": "Bergen",
-   "focus_topics": [],
-   "wet_lab_topics": [],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": true,
-   "stream": "phd"
-  },
-  {
-   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kchslx7h2n",
-   "url": "https://bsky.app/profile/tenuretracker.bsky.social/post/3n2kchslx7h2n",
-   "user": "tenuretracker.bsky.social",
-   "created": "2026-11-18T00:29:44.005587760Z",
-   "raw_text": "Job ID: 3554426AF\nExtract: PhD position in rare disease genomics and RNA biology within MSCA Doctoral Network DECODES. Focus on multi-omic data integration, AI/ML for variant identification, and therapeutic targets.\n\nUniversity of Southampton (@unisouthampton.bsky.social) is hiring:\nhttps://tenuretracker.info/l/cCdPzYSD/marie-sklodowska-curie-actions-doctoral-network-decodes-3554426af?utm_source=bsky\n\n#phd #genomics #biology",
-   "position_type": [
-    "PhD Student"
-   ],
-   "country": "UK",
-   "disciplines": [
-    "Biology",
-    "Computer Science"
-   ],
-   "sector": "Academia",
-   "is_industry": false,
-   "job_title": "PhD position in rare disease genomics and RNA biology within MSCA Doctoral Network DECODES",
-   "hiring_organization": "University of Southampton",
-   "application_url": "https://tenuretracker.info/l/cCdPzYSD/marie-sklodowska-curie-actions-doctoral-network-decodes-3554426af?utm_source=bsky",
-   "application_deadline": null,
-   "location_text": null,
-   "focus_topics": [],
-   "wet_lab_topics": [
-    "MolBio"
-   ],
-   "is_focus": false,
-   "is_priority_level": false,
-   "is_computational": true,
-   "stream": "phd"
-  }
- ],
+ "updated_at": "2026-11-18T19:33:59.000Z",
+ "last_timestamp": "2026-11-18T19:24:28Z",
+ "pending": [],
  "queue": [],
  "sent": [
   {
@@ -1535,6 +857,202 @@
    "title": "tenuretracker.bsky.social|research fellow in cell and developmental biology",
    "text": "University of Southampton (@unisouthampton.bsky.social) is hiring: #postdoc #biology #cell",
    "sent_at": "2026-11-17T23:57:02.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lkdvgle62r",
+   "app_url": "tenuretracker.info/l/CH_dsA6nr/postdoctoral-fellow-in-neurobiology-and-neurovascular-interactions-gu-lab",
+   "title": "tenuretracker.bsky.social|postdoctoral fellow in neurobiology and neurovascular interactions",
+   "text": "Extract: Postdoctoral position in Gu Lab at Harvard Medical School to study cellular and physiological mechanisms of neurovascular interactions and blood-brain barrier function. PhD required. Harvard University (@harvard.edu) is hiring: #postdoc #neuroscience #neurobiology",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2knacauuj25",
+   "app_url": "tenuretracker.info/l/alAUs_d8v/postdoctoral-researcher-in-fungal-pathogen-gene-regulation-and-effector-evolutio",
+   "title": "tenuretracker.bsky.social|postdoctoral researcher in fungal pathogen gene regulation and effector evolution",
+   "text": "Job ID: OT-30962 Extract: Postdoctoral position to investigate transcriptional and chromatin-based regulatory mechanisms governing effector gene expression and virulence in the blast fungus Magnaporthe oryzae, combining functional genomics, molecular biology and computational approaches. Institut National de Recherche pour l'Agriculture, l'Alimentation et l'Environnement is hiring: #postdoc #biolo",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lxuzdin72r",
+   "app_url": "tenuretracker.info/l/eAKeAAxp/appointment-will-be-at-assistant-professor-rank",
+   "title": null,
+   "text": "The University of Texas at Austin is hiring: #assistantprofessor #medicine #medicalbiochemistry",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lo3pp7cj2b",
+   "app_url": "tenuretracker.info/l/yriz7_dts/hms-postdoctoral-fellow-in-cell-biology",
+   "title": null,
+   "text": "Extract: We invite applicants for a postdoctoral fellow position in the laboratory of Dr. Marcia Haigis at Harvard Medical School. The lab investigates metabolic regulation in health, aging, and disease, focusing on new metabolic pathways. Harvard University (@harvard.edu) is hiring: #postdoc #biology #cellbiology",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lmvedp752r",
+   "app_url": "tenuretracker.info/l/RiC_dw4Kr/postdoctoral-fellow-delivery-vectors-for-gene-editing",
+   "title": null,
+   "text": "Extract: The Wyss Institute at Harvard University seeks a postdoctoral fellow to develop nucleic-acid-based delivery technologies for gene editing. Responsibilities include conducting research, applying for funding, and mentoring lab members. Harvard University (@harvard.edu) is hiring: #postdoc #geneediting #biologicalengineering",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2llpbwfq62f",
+   "app_url": "tenuretracker.info/l/KFVbpa9w/hms-postdoctoral-fellow-in-genetics-naxerova",
+   "title": null,
+   "text": "Extract: The Naxerova lab at Harvard Medical School invites applications for a postdoctoral fellow position focused on somatic mutations and cell populations. Candidates should have a Ph.D. or M.D./Ph.D. in relevant fields and research experience in experimental or computational biology. Harvard University (@harvard.edu) is hiring: #postdoc #biology #genomics",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lhxfxdjn2i",
+   "app_url": "tenuretracker.info/l/b1R1Y29P/research-fellow-in-host-pathogen-interactions-fbsmb1324",
+   "title": "tenuretracker.bsky.social|research fellow in host pathogen interactions",
+   "text": "Job ID: FBSMB1324 Extract: We seek a molecular and cell biologist for a Research Fellow position focusing on host-pathogen interactions of bunyaviruses. The role involves genome-wide screening and proteomic approaches. University of Leeds (@universityofleeds.bsky.social) is hiring: #postdoc #biology #hostpathogeninteractions",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l7tpod2j2i",
+   "app_url": "tenuretracker.info/l/gwYz7jbp/postdoctoral-training-fellowships-in-psychiatric-genetics-and-functional-genomic",
+   "title": "tenuretracker.bsky.social|postdoctoral training fellowships in psychiatric genetics and functional genomics",
+   "text": "New York Genome Center is hiring: #postdoc #medicine #psychiatricgenetics",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:lqprvkf46vsqzkf24owkzcws/app.bsky.feed.post/3n2l7sigrz225",
+   "app_url": "nf-pogo-alumni.org/18112026-7",
+   "title": "nano4ocean.bsky.social|research scientist in the field of molecular zooplankton biodiversity",
+   "text": "#OceanOpportunities Open position: Research Scientist in the field of molecular zooplankton biodiversity - Deadline 22 November 2026",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:5cvdt3gg65ivoaxkxtdmnb7x/app.bsky.feed.post/3n2l7o567ns2a",
+   "app_url": null,
+   "title": null,
+   "text": "🔬I'm Hiring Two Postdocs!🔬 Please join us to work on endocytosis and ubiquitin-mediated protein degradation in plants in the beautiful city of Toulouse (France) @lrsv-toulouse.bsky.social @cnrsbiologie.bsky.social @agencerecherche.bsky.social #postdoc #endocytosis #ubiquitin",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l6kgebnq2j",
+   "app_url": "tenuretracker.info/l/UEh5Z7vl/research-assistant-postdoc-universitat-marburg-3981",
+   "title": null,
+   "text": "Extract: The University of Marburg seeks a Research Assistant (Postdoc) for a 3-year position in the Department of Biology. The role involves designing optical biosensors and conducting pharmacological assays. Applicants should have a Ph.D. in life sciences and experience in molecular biology. Philipps-Universität Marburg is hiring: #postdoc #biology #developmentalgenetics",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kzxxu37b2r",
+   "app_url": "tenuretracker.info/l/66h6HRTe/postdoc-decoding-the-genetics-of-young-onset-diabetes-crg-online-recruitment-por",
+   "title": null,
+   "text": "Extract: The CRG seeks a postdoctoral researcher to lead the discovery of genetic mechanisms of diabetes using large whole-genome sequencing cohorts. Candidates should have a PhD in statistical genetics or a related field and experience in genome analysis. Centro de Regulacion Genomica is hiring: #postdoc #genomics #medicine",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:zoothx7yqas6hfyi7pq2al35/app.bsky.feed.post/3n2kr75mjok2o",
+   "app_url": "arizona.csod.com/ux/ats/careersite/4/home/requisition/27700?c=arizona",
+   "title": null,
+   "text": "We're hiring! We're looking for someone with zebrafish experience for an open Research Professional II position in my lab at the University of Arizona @uarizona.bsky.social Please apply here: Anticipated start date: Jan 2027 Please spread the word! 🙏",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:qdqijlbcqt3mj37wqc3nvgva/app.bsky.feed.post/3n2kf46shq22a",
+   "app_url": "utaustin.wd1.myworkdayjobs.com/UTstaff/job/UT-MAIN-CAMPUS/Social-Science-Humanities-Research-Associate-I_R_00049730",
+   "title": "lapph888.bsky.social|social science humanities research associate i",
+   "text": "The Champagne & Curley Labs at UT Austin are looking for a full-time Research Associate: rodent behavior, fiber photometry, surgeries, and wet lab work. A good fit for recent grads who want research experience before grad school. Please share!",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kozw7irr25",
+   "app_url": "tenuretracker.info/l/sXfLTAOK/you-hold-a-phd-in-immunology-neuroscience-or-a-closely-related-biological-discip",
+   "title": null,
+   "text": "Roche Products Ltd, United Kingdom is hiring: #postdoc #neuroscience #biology",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:njqjshjikp7feop2gnk6t44a/app.bsky.feed.post/3n2m6mhjxdy2f",
+   "app_url": null,
+   "title": "suitch-co.bsky.social|phd project in bristol looking at how bacteriophages inhibit bacterial enzymes bringing together structural prediction and experimental biochemistry",
+   "text": "A PhD project in Bristol looking at how bacteriophages inhibit bacterial enzymes, bringing together structural prediction and experimental biochemistry. #Immunology #ImmunologyJobs",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2lzavwndv2u",
+   "app_url": "www.dementiaresearcher.nihr.ac.uk/job/phd-vascular-glycocalyx-brain-ageing",
+   "title": "dementiaresearcher.bsky.social|phd vascular glycocalyx in healthy and unhealthy brain ageing",
+   "text": "How does the lining of the brain's blood vessels control immune cells as we age? A fully funded BBSRC CASE PhD at Manchester, with Anomer Bio, will find out. Open worldwide, closes 4 Dec.",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:azdqsr7mzppkm3ztj7b6qfj4/app.bsky.feed.post/3n2ltuvrfzc2u",
+   "app_url": null,
+   "title": null,
+   "text": "🚨 We’re recruiting! 🚨⁣ In addition to our two currently open permanent research positions ( we also have two open PhD positions with BioSS supervisors ⬇️ 🚨Harnessing multiallelic and haplotype variation to understand and predict performance in polyploid potato 📍This is a four-year studentship, funded for UK applicants, based in Dundee. ℹ️ Further info: ⏱️Closing date: 11/1/2027 🚨An integrated deci",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n2loshmykn2y",
+   "app_url": "www.academictransfer.com/365694",
+   "title": "academictransfer.bsky.social|phd position immunology hematology",
+   "text": "PhD Position: Immunology & Hematology @Sanquin",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2lfxv2osz2v",
+   "app_url": "www.dementiaresearcher.nihr.ac.uk/job/phd-ageing-parkinsons-disease-prevent-pd",
+   "title": "dementiaresearcher.bsky.social|phd students in luxembourg to study organelle dysfunction immune ageing and rejuvenation strategies",
+   "text": "How does ageing set the stage for Parkinson's? Prevent-PD is recruiting PhD students in Luxembourg to study organelle dysfunction, immune ageing and rejuvenation strategies. Funded, 36 months. Closes 3 Jan.",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:5x6xdbbyvttxwctbb3tvp623/app.bsky.feed.post/3n2lfeevvsk2i",
+   "app_url": null,
+   "title": null,
+   "text": "Excited to be advertising this project using isotopes, genomics and biologgers to investigate a striking change in chiffchaff migratory behaviour 🧬 🐦 open to all candidates, and supervised by the dream team of @pauldufour80.bsky.social and Rachel Jeffreys. www.findaphd.com/phds/project...",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:7vkiopsd7ho4ub6h7usqvbfm/app.bsky.feed.post/3n2lbcqiakc2d",
+   "app_url": "tinyurl.com/4adkeeyv",
+   "title": "ect-uk.bsky.social|phd opportunity to work at the palace leas lte",
+   "text": "There is a #PhD opportunity to work at the Palace Leas #LTE at @newcastleuni.bsky.social under the supervision of @dmevans.bsky.social Network #science of the #SoilMicrobiome: linking long-term fertilisation to plant function & productivity. Deadline: 24 Nov 2026 🌏",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:lqprvkf46vsqzkf24owkzcws/app.bsky.feed.post/3n2l7a23mgk2e",
+   "app_url": "nf-pogo-alumni.org/18112026-6",
+   "title": "nano4ocean.bsky.social|phd position on marine chronobiology and zooplankton",
+   "text": "#OceanOpportunities Open position: PhD position on marine chronobiology and zooplankton - Deadline 03 January 2027",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2l3y3luj32b",
+   "app_url": "tenuretracker.info/l/KsYmEWik/doctoral-researcher-molecular-and-reproductive-biology",
+   "title": "tenuretracker.bsky.social|doctoral researcher molecular and reproductive biology",
+   "text": "University of Oulu (@oulu.fi) is hiring: #phd #biology #molecular",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:ct7o5jemsawchk75tuov4kmz/app.bsky.feed.post/3n2kvdqygl22r",
+   "app_url": "www.jobs.ethz.ch/job/view/12297",
+   "title": "mschoelmerich.bsky.social|phd position in my lab at eth zurich part of nccr genesis",
+   "text": "🦠 PhD position in my lab at ETH Zurich, part of NCCR Genesis! Study alkaliphilic methanogenic archaea: how they conserve energy and get carbon at high pH, and how their methane differs from abiotic methane. Fully funded, 4 yrs. Apply by 1 Dec 👇",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:wvy5nncrtz4at73aqaabtatd/app.bsky.feed.post/3n2kkwyqsfd2q",
+   "app_url": "laplace.expert/en/apply/opportunities/af27d623-4ffc-453f-81dc-ebc3770dd680",
+   "title": "laplaceexpert.bsky.social|phd position sodium regulation of eukaryotic dna replication",
+   "text": "🎓 PhD position: Sodium Regulation of Eukaryotic DNA Replication 🇬🇧 🏛️ Offered by University of York 📍 United Kingdom 💰 Funding: Scholarship ⏳ Deadline: 6 January 2027 🗓️ Duration: 4 years 🔗",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2km23kzkf2y",
+   "app_url": "tenuretracker.info/l/JcXmuLcd/phd-position-3-years-at-the-department-of-clinical-dentistry",
+   "title": "tenuretracker.bsky.social|phd position in ai powered mesenchymal stromal cell msc tissue engineering platform development",
+   "text": "Extract: PhD position in AI-powered mesenchymal stromal cell (MSC) tissue engineering platform development. Focus on automated cell production, machine learning for functional prediction, and regenerative medicine. University of Bergen (@unibergen.bsky.social) is hiring: #phd #biology #machinelearning",
+   "sent_at": "2026-11-18T19:33:59.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kchslx7h2n",
+   "app_url": "tenuretracker.info/l/cCdPzYSD/marie-sklodowska-curie-actions-doctoral-network-decodes-3554426af",
+   "title": "tenuretracker.bsky.social|phd position in rare disease genomics and rna biology within msca doctoral network decodes",
+   "text": "Job ID: 3554426AF Extract: PhD position in rare disease genomics and RNA biology within MSCA Doctoral Network DECODES. Focus on multi-omic data integration, AI/ML for variant identification, and therapeutic targets. University of Southampton (@unisouthampton.bsky.social) is hiring: #phd #genomics #biology",
+   "sent_at": "2026-11-18T19:33:59.000Z"
   }
  ],
  "seen_uris": [
@@ -5108,6 +4626,103 @@
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2kchslx7h2n",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2keasmpxs2f",
   "at://did:plc:r2lciwyorhiioeadcvrazv6u/app.bsky.feed.post/3n2laocozzs27",
-  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2keasxokk2f"
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2keasxokk2f",
+  "at://did:plc:ytf5763gjdd47tax3ascypbw/app.bsky.feed.post/3n2m5t7lhhc2r",
+  "at://did:plc:njqjshjikp7feop2gnk6t44a/app.bsky.feed.post/3n2m6mhjxdy2f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m73x3c2n25",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lsxhgyt22b",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lvh64im22i",
+  "at://did:plc:odtpdfb2ivqa75lxbc6pwmqm/app.bsky.feed.post/3n2lslpojfs2m",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2ltkx2e6d2f",
+  "at://did:plc:j2y3jai4mwk5apgey7yciqhf/app.bsky.feed.post/3n2lxoj2uk22j",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m5akiqpo2j",
+  "at://did:plc:hfjhbunsegkz4vdf5y4taxpu/app.bsky.feed.post/3n2mbc7wlx22r",
+  "at://did:plc:hjl45ptg37w3es3asdiapff3/app.bsky.feed.post/3n2lwoyr6su2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lwotekh225",
+  "at://did:plc:4ilzk2ackkz6sszuws7hdd6h/app.bsky.feed.post/3n2lxqwbg5s23",
+  "at://did:plc:ume4ioj77zdrpqrwo3m5qlj3/app.bsky.feed.post/3n2m77id5nc2s",
+  "at://did:plc:iio7dmswb546f2taox5f7phh/app.bsky.feed.post/3n2m6kfhmoo2q",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2ltkwphk22f",
+  "at://did:plc:iwd3i3ttttoyahpyoxpnma6n/app.bsky.feed.post/3n2ltlm3hws2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m7piueqi2x",
+  "at://did:plc:4ilzk2ackkz6sszuws7hdd6h/app.bsky.feed.post/3n2lxsadlck23",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lvzmoyje2z",
+  "at://did:plc:2sv7qohk6rl6wjgdetucyauc/app.bsky.feed.post/3n2lzj3l7ks2u",
+  "at://did:plc:kihf6btvoyeebgzfh3ymspog/app.bsky.feed.post/3n2mbuvi4ij2p",
+  "at://did:plc:n4765ftlk5sxhgd5low6rqbd/app.bsky.feed.post/3n2km3tlllc24",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2mafbhhba2a",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lxuzdin72r",
+  "at://did:plc:4ht3pyt4jlpwiaurszoq2l2p/app.bsky.feed.post/3n2m4vrc2bk2n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2mbln4nam2j",
+  "at://did:plc:3cji7bokry6o7kqz6cgpjpom/app.bsky.feed.post/3n2m4k7dtjd2s",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m2vbj6x62r",
+  "at://did:plc:ii2b4et3vrqere5qempdgmw5/app.bsky.feed.post/3n2maza3yos2v",
+  "at://did:plc:dbkzmkezkvp75zdw5agnr7gp/app.bsky.feed.post/3n2m2gvdup22d",
+  "at://did:plc:cwziub2n2i4pcv34n5uwtngd/app.bsky.feed.post/3n2lv5w3lik2i",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n2m4pll2ae27",
+  "at://did:plc:gcvki56jmtnfhbdqvzrrnxr6/app.bsky.feed.post/3n2lswjqars2c",
+  "at://did:plc:xrkxpxpdqmzc2bx5k6ubnt65/app.bsky.feed.post/3n2m4hjhqkk2q",
+  "at://did:plc:azdqsr7mzppkm3ztj7b6qfj4/app.bsky.feed.post/3n2ltuvvb2s2u",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m5akquhw2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lu7g5v7m2y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lz26ae6p2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m5wkp5at2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lwot5ppv2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lusc35ek2z",
+  "at://did:plc:wvy5nncrtz4at73aqaabtatd/app.bsky.feed.post/3n2lwk6dy7m2k",
+  "at://did:plc:fk74p7nmeyyieovtktvph6cx/app.bsky.feed.post/3n2mbail2ik2x",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m2cboe5n2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lyic7nxp2n",
+  "at://did:plc:cqohyh3j34xcbuki5pcqar35/app.bsky.feed.post/3n2m6sbz7e22x",
+  "at://did:plc:gtiong7xd2cn7nzehztnxxbs/app.bsky.feed.post/3n2lvmsfth222",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lznwkbcy2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m2cbvveq2z",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lvh5rjzc2i",
+  "at://did:plc:6gkeabecqlk4wylzjokh7p6g/app.bsky.feed.post/3n2lzafbnzk2y",
+  "at://did:plc:e4ukwq6o55wmy6scwj2dbvmq/app.bsky.feed.post/3n2m6spxqg224",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n2m4plmhxu2f",
+  "at://did:plc:fmwh5gzqyjolbn5pygigffhp/app.bsky.feed.post/3n2lt4nbkdx2g",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lxawyeqn2i",
+  "at://did:plc:fsee6h3qfcy7k6qux56fhg4w/app.bsky.feed.post/3n2lt5nhj622n",
+  "at://did:plc:g5vzgez6wzc3mhym6diy56rj/app.bsky.feed.post/3n2m2yokmrc2a",
+  "at://did:plc:5w7aqooxhtbew5wm46wvxo5l/app.bsky.feed.post/3n2lu4byxdw2l",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m73xggjm2i",
+  "at://did:plc:onchcnn7chrothlrgsugbo5h/app.bsky.feed.post/3n2ly6ojrej2x",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lu7fxi3s2r",
+  "at://did:plc:2qaklu6x7w6onhlyszucyhcq/app.bsky.feed.post/3n2m55aa62k2e",
+  "at://did:plc:rdkozsvjst5gbvgfb7othbau/app.bsky.feed.post/3n2lutexplc2m",
+  "at://did:plc:k6msp74o6fwwqmjke3p34due/app.bsky.feed.post/3n2m6y6vids2a",
+  "at://did:plc:f4sslca2nosx272ctqjwhuoz/app.bsky.feed.post/3n2m3gjyqqs2p",
+  "at://did:plc:rzawzdvx5xisnuydfymuitpw/app.bsky.feed.post/3n2lyxerkc22r",
+  "at://did:plc:uxei74euy7k2zjmpe3vjeq6w/app.bsky.feed.post/3n2lywptpps2s",
+  "at://did:plc:iwsfi4g4dcdumprp6qd47sow/app.bsky.feed.post/3n2m3uwies22p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m4ofr6vq2y",
+  "at://did:plc:xbfdi7hxhivj2nyiv3puv44h/app.bsky.feed.post/3n2m6tbpg6n23",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2mblmwa4v2z",
+  "at://did:plc:g5vzgez6wzc3mhym6diy56rj/app.bsky.feed.post/3n2m5c6x2hs2i",
+  "at://did:plc:gfanuxztw23oyks6n2owgipu/app.bsky.feed.post/3n2m3unn3ec2g",
+  "at://did:plc:z5n6ovawxafm24qnwwwnliyh/app.bsky.feed.post/3n2lu7o7vqk2t",
+  "at://did:plc:kj7mbbzobdapyou45u52ptsd/app.bsky.feed.post/3n2lwwpymm22t",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lyibyx3y25",
+  "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n2lvj26s322t",
+  "at://did:plc:kihf6btvoyeebgzfh3ymspog/app.bsky.feed.post/3n2lvwoejpl2k",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m7pinvrg2r",
+  "at://did:plc:6o272jcalpo5ri33ipikisod/app.bsky.feed.post/3n2lt7rq2sw2d",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m6jfyqlb2f",
+  "at://did:plc:7nfsh6bv3lo3ht6c5k2uiwea/app.bsky.feed.post/3n2lurl5cwc2e",
+  "at://did:plc:uzkmcdxlfenc33keauyr4mcc/app.bsky.feed.post/3n2ltr6pynk2m",
+  "at://did:plc:azdqsr7mzppkm3ztj7b6qfj4/app.bsky.feed.post/3n2ltuvrfzc2u",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m43dq34e2i",
+  "at://did:plc:73yr4j4g2lzwkdkmysnkqvb5/app.bsky.feed.post/3n2m2qjxia22z",
+  "at://did:plc:kpvmyb4sawkvfcvp4quwn67l/app.bsky.feed.post/3n2ly452knc2r",
+  "at://did:plc:qngeqgynh6wsguul2shzjbgh/app.bsky.feed.post/3n2lsi7bqq22f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m3hr46xe2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2lr6czamp2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2m4ofkg3o2j",
+  "at://did:plc:klahcji5vnk7yuuayvukl5nf/app.bsky.feed.post/3n2lxcyu2i727",
+  "at://did:plc:rpvrcqjw5qygu4dowf26wlve/app.bsky.feed.post/3n2lxvmiidc2e",
+  "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2lzavwndv2u",
+  "at://did:plc:umwypa52xwni3myc3xbzsjsw/app.bsky.feed.post/3n2luvj4mnc2j",
+  "at://did:plc:azdqsr7mzppkm3ztj7b6qfj4/app.bsky.feed.post/3n2lu5ac5ws2u"
  ]
 }
