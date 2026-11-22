@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updated_at": "2026-11-22T18:40:05.000Z",
- "last_timestamp": "2026-11-22T18:30:16.722294420Z",
+ "updated_at": "2026-11-22T22:44:06.000Z",
+ "last_timestamp": "2026-11-22T22:29:33.856Z",
  "pending": [],
  "queue": [],
  "sent": [
@@ -1998,6 +1998,62 @@
    "title": "tenuretracker.bsky.social|research assistant role in molecular and cell biology",
    "text": "Job ID: 14242 Extract: Research Assistant role in Molecular and Cell Biology to study X chromosome inactivation using stem cells, RNA-seq, and super-resolution microscopy. Fixed-term 12 months, Grade 6 salary £32,546–£38,448 pro-rata. University of Leicester (@uniofleicester.bsky.social) is hiring: #researcher #biology #xchromosomeinactivation",
    "sent_at": "2026-11-22T18:40:05.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wdfwijiu25",
+   "app_url": "tenuretracker.info/l/1P3P6g5_d/fellowships-grants-and-career-support-postdoctoral-fellowships-embo",
+   "title": null,
+   "text": "European Molecular Biology Organization is hiring: #postdoc",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:sjddcchc3glzk52el7nojr7z/app.bsky.feed.post/3n2wcoxz4is2y",
+   "app_url": "chemoproteomics.stanford.edu/join",
+   "title": "dina-sch.bsky.social|postdoctoral scholar in quantitative proteomics of the lipid nanoparticle protein corona",
+   "text": "We’re hiring (postdoc) - know anyone who is passionate about #proteomics and interested in combining their proteomics skills with lipid nanoparticle research? The postdoc will be co-advised between Marshall Padilla, Rebecca Pinals and myself. More details here:",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:ohc4qnycpwsygck2fmdskbht/app.bsky.feed.post/3n2wo3jkcbc2m",
+   "app_url": "elxw.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1001/job/14959",
+   "title": null,
+   "text": "The University of Edinburgh is hiring a Postdoctoral Research Associate. Possess a PhD in Genomic Epidemiology, Computational Virology or a related field, plus experience in genomic data analysis. Edinburgh, United Kingdom #Epijobs",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:ohc4qnycpwsygck2fmdskbht/app.bsky.feed.post/3n2wo2hdstc2m",
+   "app_url": "jobs.soton.ac.uk/Vacancy.aspx",
+   "title": "epijobs.bsky.social|research fellow in genetic epidemiology",
+   "text": "The University of Southampton is hiring a Research Fellow in Genetic Epidemiology. Must have a PhD in Genetic Epidemiology, Bioinformatics, Biostatistics or a related field, plus proficiency in R and/or Python. Southampton, United Kingdom #Epijobs",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2we566rez2z",
+   "app_url": "tenuretracker.info/l/WI_dsS_dQ2/postdoctoral-research-embl-ebi",
+   "title": null,
+   "text": "European Bioinformatics Institute EMBL is hiring: #postdoc",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:tf5jd43pywionew7suwgd2un/app.bsky.feed.post/3n2wl7bpnj22t",
+   "app_url": "www.science.hr/jobs/250607/ethical-societal-and-clinical-implementation-cha-2",
+   "title": "sciencehr.bsky.social|phd position ethical societal and clinical implementation challenges of bioengineered muscle",
+   "text": "Open position: Ethical, Societal and Clinical Implementation Challenges of Bioengineered Muscle. #science #career #jobs #sciencejobs #job #jobsearch #bioengineering #PhD #PhDposition",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2wcwu6ona2m",
+   "app_url": "www.dementiaresearcher.nihr.ac.uk/funding/wellcome-sanger-institute-4-year-phd-programme-2027",
+   "title": "dementiaresearcher.bsky.social|four year phd studentship",
+   "text": "Two days left: 12 fully funded four-year PhD studentships at the Wellcome Sanger Institute, any nationality, fees and tax-free stipend covered, Cambridge PhD at the end. Closes 9am Tuesday.",
+   "sent_at": "2026-11-22T22:44:06.000Z"
+  },
+  {
+   "uri": "at://did:plc:tf5jd43pywionew7suwgd2un/app.bsky.feed.post/3n2wkti6sls2t",
+   "app_url": "www.science.hr/jobs/249352/phd-project-post-infection-tissue-remodeling-of-th",
+   "title": "sciencehr.bsky.social|phd project post infection tissue remodeling of the endothelium across organs",
+   "text": "PhD Project \"Post-infection tissue remodeling of the endothelium across organs\" (PAIS_ALER) - #Heidelberg University. #science #career #jobs #sciencejobs #job #jobsearch #PhD #PhDposition",
+   "sent_at": "2026-11-22T22:44:06.000Z"
   }
  ],
  "seen_uris": [
@@ -7169,6 +7225,64 @@
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2w23bmm4t2z",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2w53ansia24",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2w7wlwqx72a",
-  "at://did:plc:4k2si4o5vuqvpq5yrwwukcqz/app.bsky.feed.post/3n2vxpx337c2c"
+  "at://did:plc:4k2si4o5vuqvpq5yrwwukcqz/app.bsky.feed.post/3n2vxpx337c2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wej2xveh2f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wbij5ist2i",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n2whag5xqc26",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wgcn4bz724",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wbuzikuh2b",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wmc7vhqf2y",
+  "at://did:plc:dgn7z5kcypk42lahvpr47jwx/app.bsky.feed.post/3n2wayqem7k2p",
+  "at://did:plc:xk36e7xxxlpbi42pmav4keg3/app.bsky.feed.post/3n2wjybmvbp2l",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wfacrwfp2f",
+  "at://did:plc:z5iwl2tfak7dgb4wxcmp3j6q/app.bsky.feed.post/3n2wcnwvltr2c",
+  "at://did:plc:mnmzpxebkmcg6rjchfgitc6c/app.bsky.feed.post/3n2wmxmrkjc2e",
+  "at://did:plc:ohc4qnycpwsygck2fmdskbht/app.bsky.feed.post/3n2wo2hdstc2m",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wk2432vs24",
+  "at://did:plc:ohc4qnycpwsygck2fmdskbht/app.bsky.feed.post/3n2wo3jkcbc2m",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wne73c2r2x",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wcmbu3hb2z",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wk23q2ea2a",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wbuztpdy25",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wgo6vlwp2i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wfl257532y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wc7qxi2c2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wmnqh4dj2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2we566rez2z",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wdrtpshl2i",
+  "at://did:plc:tf5jd43pywionew7suwgd2un/app.bsky.feed.post/3n2wkti6sls2t",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wb4k2krz2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wks5vsaz2i",
+  "at://did:plc:ohc4qnycpwsygck2fmdskbht/app.bsky.feed.post/3n2wnwnoeyc2m",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wfl2dvub2j",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wcz7cnkr2r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wgzym2kp2n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wjper53q2a",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wmca46lf2y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wmnq7ixu2b",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wdfwijiu25",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2whg7sco32r",
+  "at://did:plc:sjddcchc3glzk52el7nojr7z/app.bsky.feed.post/3n2wcoxz4is2y",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n2wjjq2wj42f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2whsky6j72n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2willyvne2f",
+  "at://did:plc:tf5jd43pywionew7suwgd2un/app.bsky.feed.post/3n2wl7bpnj22t",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2whga5mt72i",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wne7bu4f2y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wkgm7py52r",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wl5ua4xq25",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wgo7amml2r",
+  "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2wlfjaio32f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wl5ugtw424",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wnowu5ia2n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wnowiywx2z",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wmyiertv2i",
+  "at://did:plc:tf5jd43pywionew7suwgd2un/app.bsky.feed.post/3n2wkxawszs2t",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wgzybbsi25",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n2whfsfult26",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wo2j4vmd25",
+  "at://did:plc:m4biwig5fyblk4qbkvtvpww3/app.bsky.feed.post/3n2wd2qdjwc2v",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n2wetsets72n",
+  "at://did:plc:gdh57r7xdwrc57g2cbap2xtw/app.bsky.feed.post/3n2wcwu6ona2m"
  ]
 }
