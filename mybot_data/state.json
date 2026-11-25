@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updated_at": "2026-11-25T16:08:07.000Z",
- "last_timestamp": "2026-11-25T15:37:43.441+03:00",
+ "updated_at": "2026-11-25T20:37:49.000Z",
+ "last_timestamp": "2026-11-25T20:17:27.587Z",
  "pending": [],
  "queue": [],
  "sent": [
@@ -2635,6 +2635,41 @@
    "title": null,
    "text": "Awesome job oportuinity alert 🚨 Postdoc in bioinformatics at SLU (Uppsala campus) focused on Arctic Microbial Ecology/Genomics. #bioinformatics #microsky",
    "sent_at": "2026-11-25T16:08:07.000Z"
+  },
+  {
+   "uri": "at://did:plc:ldmqy4ljluszygafsldhg5o3/app.bsky.feed.post/3n35ruabdic27",
+   "app_url": "www.deutsche-botanische-gesellschaft.de/en/job-openings",
+   "title": "plantsciencedbg.bsky.social|postdoc molecular algal biology",
+   "text": "#PlantSciJobs #PlantSciJob PostDoc: Molecular Algal Biology In Michael Borg‘s lab @borglab.bsky.social 📍 @uni-kiel.de Deadline: 6 December 2026",
+   "sent_at": "2026-11-25T20:37:49.000Z"
+  },
+  {
+   "uri": "at://did:plc:g26xk3xpoakoidoiaw35ah4s/app.bsky.feed.post/3n35nl6gbn32y",
+   "app_url": "buff.ly/Fb7bQdB",
+   "title": null,
+   "text": "Are you a highly motivated and creative scientist with a PhD in microbiology or a related life sciences discipline? Check out our current vacancy ⤵️ 💷£39,000 to £46,500 🗓️Apply by 4 December 2026 ➡️",
+   "sent_at": "2026-11-25T20:37:49.000Z"
+  },
+  {
+   "uri": "at://did:plc:xk36e7xxxlpbi42pmav4keg3/app.bsky.feed.post/3n35n4bwu5d24",
+   "app_url": null,
+   "title": "cosmossn.bsky.social|msc or phd in therapeutic genome editing",
+   "text": "MSc or PhD in therapeutic genome editing Research project Prof. Sébastien Levesque's research group is seeking a Master's or PhD student at the CHU de Québec - Université Laval to develop therapeutic genome editing strategies for severe blood disorders.",
+   "sent_at": "2026-11-25T20:37:49.000Z"
+  },
+  {
+   "uri": "at://did:plc:me4lbyff7ghpao4jbzjvqjgp/app.bsky.feed.post/3n35molymzc2o",
+   "app_url": "direc.to/pPA5",
+   "title": "umasschan.bsky.social|basic biomedical sciences umbrella pathway phd at umass chan",
+   "text": "Students in the Basic Biomedical Sciences Umbrella Pathway, one of the pathways to a #PhD in biomedical sciences at UMass Chan, rotate through research labs before joining a specific research group and one of eight programs of study. Apply by Dec. 1: @rti-umasschan.bsky.social",
+   "sent_at": "2026-11-25T20:37:49.000Z"
+  },
+  {
+   "uri": "at://did:plc:dobk2fxyznrvfpmk3bspxul7/app.bsky.feed.post/3n35lvqzfck2b",
+   "app_url": "willsmithlab.com/2026/11/25/phd-studentship-available-experimental-evolution-of-microbial-attack-and-defence",
+   "title": "willpjsmith.bsky.social|phd studentship in experimental evolution of microbial attack and defence",
+   "text": "📢 4y funded PhD with me and @dannagifford.bsky.social: experimental evolution of microbial attack and defence 💷 4y funded studentship with UK fees and £21,805pa stipend included. 📅 Apply by Jan 1st 2027. More details and link to application here: Please share!",
+   "sent_at": "2026-11-25T20:37:49.000Z"
   }
  ],
  "seen_uris": [
@@ -8650,6 +8685,55 @@
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n34giavdr52z",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n34aljkscj2y",
   "at://did:plc:kybuwxxwwlswkuawmpwol3ou/app.bsky.feed.post/3n344lyuoek2y",
-  "at://did:plc:yuvwi5ifcfzgshq2say6grqr/app.bsky.feed.post/3n34wfut5ys2i"
+  "at://did:plc:yuvwi5ifcfzgshq2say6grqr/app.bsky.feed.post/3n34wfut5ys2i",
+  "at://did:plc:4oomlir6knxegjpgcwlpqrgu/app.bsky.feed.post/3n35jr7sdyx2a",
+  "at://did:plc:44bnvenoyzdnljzd5ltaygrh/app.bsky.feed.post/3n35vldgx222v",
+  "at://did:plc:a2hrolsc5aulz44noj2zdwip/app.bsky.feed.post/3n35nky7ygn25",
+  "at://did:plc:5yttyryowvcs2rbeddvjudiv/app.bsky.feed.post/3n35vbf2oms2m",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n35w5ylgr72p",
+  "at://did:plc:23icdz2rxukyxboqpazjjejj/app.bsky.feed.post/3mvixspmht22w",
+  "at://did:plc:6sj334v3lfd3ceqmcnzvhoug/app.bsky.feed.post/3n35rswdxns2x",
+  "at://did:plc:7jptrwqu4anmnaedtnsnl2vy/app.bsky.feed.post/3n35tvuwzfa2m",
+  "at://did:plc:4gt2zag6cmbexsh2q3hfp4um/app.bsky.feed.post/3n35jcv44r224",
+  "at://did:plc:gkbgtpojfao6y2m6qzm64vkw/app.bsky.feed.post/3n35vg3qxsy2f",
+  "at://did:plc:me4lbyff7ghpao4jbzjvqjgp/app.bsky.feed.post/3n35molymzc2o",
+  "at://did:plc:w4p3fy2vm4fhrac4cyfaw5j6/app.bsky.feed.post/3n35uwnjfm72u",
+  "at://did:plc:mw5vqrvebt7im4xgoyo53vv6/app.bsky.feed.post/3n35pztqyz42p",
+  "at://did:plc:fozzbhhdmk6sch52su2ney4e/app.bsky.feed.post/3n35qaenkrr2m",
+  "at://did:plc:3qx3wgjvwbhbr2uvbv5qnot4/app.bsky.feed.post/3n35mnjyzio2i",
+  "at://did:plc:wvy5nncrtz4at73aqaabtatd/app.bsky.feed.post/3n35n5p7p2o22",
+  "at://did:plc:n3vdihuxvlwedqa52oogegs6/app.bsky.feed.post/3n35jrru55c27",
+  "at://did:plc:hpuimd3xshydwcavz5ujv5ng/app.bsky.feed.post/3n35piysaj22n",
+  "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n35w6mxjx62k",
+  "at://did:plc:m3c3y67nxbeugcsferbyrmuu/app.bsky.feed.post/3n35kc6mohs2c",
+  "at://did:plc:bbuj2ubuh6itxiqqk2wwqn2n/app.bsky.feed.post/3n35uwukz7226",
+  "at://did:plc:ty2kxmxjmtealqi2kc7f4pww/app.bsky.feed.post/3n35t4hr24c2j",
+  "at://did:plc:dobk2fxyznrvfpmk3bspxul7/app.bsky.feed.post/3n35lvqzfck2b",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n35pncluu32w",
+  "at://did:plc:hsn6m5h37b6jgcf2gah47eh7/app.bsky.feed.post/3n35kube7kl2h",
+  "at://did:plc:66ka3bnyn57qtosyct72lc42/app.bsky.feed.post/3n35ularkftu2",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n35njekyvf2f",
+  "at://did:plc:kiu4z2sfi6xtwpjwzq5cjzh7/app.bsky.feed.post/3n35jolxjcc2v",
+  "at://did:plc:yw26kwsm2sjbap22vjge5a7p/app.bsky.feed.post/3n35jyfuze22g",
+  "at://did:plc:u2vwimbus653emnk6o5yiv3d/app.bsky.feed.post/3n35p2yletc2p",
+  "at://did:plc:dilbiczlsemllmpa2plyliih/app.bsky.feed.post/3n35qdhe2ep2b",
+  "at://did:plc:ldmqy4ljluszygafsldhg5o3/app.bsky.feed.post/3n35ruabdic27",
+  "at://did:plc:iqz3cexpleulzmhlmugrputh/app.bsky.feed.post/3n35olvfbps26",
+  "at://did:plc:qyzl4ibh3uibx4qjv6oxo6bx/app.bsky.feed.post/3n35vqao7222u",
+  "at://did:plc:pcqvwnyhq7fznslqmbvllwo7/app.bsky.feed.post/3n35mjlv6rk2k",
+  "at://did:plc:ywlagohauh5cgwmspgnrpd2o/app.bsky.feed.post/3n35y43qlb22q",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n35njetp7e2y",
+  "at://did:plc:mmkxrjpuoekx6rvbec4bh6nf/app.bsky.feed.post/3n35jpiwr6c2i",
+  "at://did:plc:44bnvenoyzdnljzd5ltaygrh/app.bsky.feed.post/3n35vopzuck2v",
+  "at://did:plc:23icdz2rxukyxboqpazjjejj/app.bsky.feed.post/3n35qgdjnas2m",
+  "at://did:plc:xhrfirivbxsyjkdbgskcuhls/app.bsky.feed.post/3n35smwtrc22h",
+  "at://did:plc:g26xk3xpoakoidoiaw35ah4s/app.bsky.feed.post/3n35nl6gbn32y",
+  "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n35w6n6njd2t",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n35pxzrooy2y",
+  "at://did:plc:hin5jjyb5dgi5wtjudeb62xm/app.bsky.feed.post/3n35ok3undc2a",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n35r7euzb62i",
+  "at://did:plc:7rhirb2l5jussvrikatczw4d/app.bsky.feed.post/3n35w6ntdo22h",
+  "at://did:plc:xk36e7xxxlpbi42pmav4keg3/app.bsky.feed.post/3n35n4bwu5d24",
+  "at://did:plc:hhcew23memljzpaitdpt3uro/app.bsky.feed.post/3n35jbpvnzs2f"
  ]
 }
