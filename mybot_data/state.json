@@ -1,7 +1,7 @@
 {
  "version": 1,
- "updated_at": "2026-11-26T20:24:19.000Z",
- "last_timestamp": "2026-11-26T20:18:59.000Z",
+ "updated_at": "2026-11-27T01:07:52.000Z",
+ "last_timestamp": "2026-11-27T01:01:01.767926802Z",
  "pending": [],
  "queue": [],
  "sent": [
@@ -2796,6 +2796,34 @@
    "title": "laplaceexpert.bsky.social|phd position neuropeptide evolution and function finding the missing links",
    "text": "🎓 PhD position: Neuropeptide evolution and function finding the missing links 🇬🇧 🏛️ Offered by Queen Mary University of London 📍 United Kingdom 💰 Funding: Scholarship ⏳ Deadline: 27 January 2027 🔗",
    "sent_at": "2026-11-26T20:24:19.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apzugqct2p",
+   "app_url": "tenuretracker.info/l/JO1Rco6c/postdoc-neurogenetics-of-innate-social-behavior-chen-group",
+   "title": "tenuretracker.bsky.social|postdoc position to investigate genetic control of innate animal behavior in monogamous rodent species using neurogenetic tools omics and behavioral assays",
+   "text": "Job ID: JR4860 Extract: Postdoc position to investigate genetic control of innate animal behavior in monogamous rodent species using neurogenetic tools, omics, and behavioral assays. EMBL Rome is hiring: #postdoc #neuroscience #biology",
+   "sent_at": "2026-11-27T01:07:52.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apjt6rxz2p",
+   "app_url": "tenuretracker.info/l/TZDleWah/2026-embl-interdisciplinary-postdocs-fellowships-exploring-life-in-context-call",
+   "title": "tenuretracker.bsky.social|interdisciplinary postdoc fellowships exploring life in context",
+   "text": "EMBL Rome is hiring: #postdoc #biology",
+   "sent_at": "2026-11-27T01:07:52.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3akiii2pp2x",
+   "app_url": "tenuretracker.info/l/bv8FDGj0/postdoctoral-research-associate",
+   "title": "tenuretracker.bsky.social|postdoctoral position in mechanobiology and live cell imaging",
+   "text": "Job ID: R143319 Extract: Postdoctoral position in mechanobiology and live cell imaging to supervise students, conduct experiments on human tissue/cell constructs, collaborate with optics lab, and manage lab duties including training and manuscript writing. Northeastern University is hiring: #postdoc #biology #mechanobiology",
+   "sent_at": "2026-11-27T01:07:52.000Z"
+  },
+  {
+   "uri": "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3aou6ufmm2c",
+   "app_url": "tenuretracker.info/l/j4cUmzNP/postdoctoral-research-fellow-computational-biology",
+   "title": null,
+   "text": "Job ID: 701203 Extract: Postdoctoral Research Fellow role in computational biology to develop AI models for protein/pathway design in temperature-tolerant crops. Requires PhD in computational biology, bioinformatics, AI-modelling, or related field, with Python/R proficiency and ML model experience. Monash University is hiring: #postdoc #biology #machinelearning",
+   "sent_at": "2026-11-27T01:07:52.000Z"
   }
  ],
  "seen_uris": [
@@ -9099,6 +9127,52 @@
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n37ypr6ydh2f",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3abeuy4m42y",
   "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3a536vflm2f",
-  "at://did:plc:2l4ojg4lybvbojw4ymdohirh/app.bsky.feed.post/3n37ysfajl72n"
+  "at://did:plc:2l4ojg4lybvbojw4ymdohirh/app.bsky.feed.post/3n37ysfajl72n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ajplfsml2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ark5con22e",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3awomsrp32y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ayg32iwt2y",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3amvm5m7a2p",
+  "at://did:plc:qrc653ktrhpbkm3t2r3dvnvr/app.bsky.feed.post/3n3amgtrwu22v",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3axjhn6ax2p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3as27p3x52c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apzu3d7u2c",
+  "at://did:plc:xk36e7xxxlpbi42pmav4keg3/app.bsky.feed.post/3n3ayeno5fr2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apjt6rxz2p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3axxrbjen2f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3akiii2pp2x",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3alil4nvx2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3atrnhzkv2f",
+  "at://did:plc:ydccmfvxrmhofxbud474cwnf/app.bsky.feed.post/3n3avoh34qb2w",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apcisl362d",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3aoe3ocsg2s",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3amflv2qb2e",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3atf6jtz22p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3aou6nnnw2d",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3asijbsf22p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3au66mxs42z",
+  "at://did:plc:g75i4nk6zisaguuusu7xaxij/app.bsky.feed.post/3n3ars6lj3w2n",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3akii7fha2e",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ajbbrt5b2b",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3aou6ufmm2c",
+  "at://did:plc:bf4e2p2o3txej4zkwjwamxv6/app.bsky.feed.post/3n3auo5nac52e",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3asymvimk2p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3as27ikwq2s",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3atf5sez52f",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3alynuybm2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3awc4g2wc2b",
+  "at://did:plc:qrc653ktrhpbkm3t2r3dvnvr/app.bsky.feed.post/3mrhu7sjx6k2k",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3apzugqct2p",
+  "at://did:plc:xdv2kmdnplm4o5ywvuhs5443/app.bsky.feed.post/3n3auyeozek22",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ark4wroz2z",
+  "at://did:plc:sxjvaeicqbgtpnebxcrxpz6d/app.bsky.feed.post/3n3amxcfyi22d",
+  "at://did:plc:e6hlgzwavdtghirdcbgyy2js/app.bsky.feed.post/3n3aiwgqbyk25",
+  "at://did:plc:5aoeedl6untpxsp6goqeflno/app.bsky.feed.post/3n3auo5wxyq2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3akyi2zra2p",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ak7olua72x",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3air6nvqg2c",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3au66bxcb2y",
+  "at://did:plc:oaat2lh7iraasquq7324qmeb/app.bsky.feed.post/3n3ak7vd52z25",
+  "at://did:plc:m2rhzyb4ihbylrrfy7hlsf3s/app.bsky.feed.post/3n3ax4wvnro2b"
  ]
 }
